@@ -1,17 +1,38 @@
-# React + Vite
+# NC County Financial Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive data visualization of North Carolina county finances, built from the Annual Financial Information Reports (AFIR) published by the NC Department of State Treasurer.
 
-Currently, two official plugins are available:
+**Live site:** https://xgx755.github.io/nc-county-financials
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it shows
 
-## React Compiler
+- Revenue composition by source (property taxes, sales tax, intergovernmental, etc.)
+- Expenditure allocation by function (education, public safety, human services, etc.)
+- Per capita comparisons against population-group averages
+- Side-by-side comparison between any two counties
+- Sortable table of all 75 counties that filed an AFIR
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Data
 
-## Expanding the ESLint configuration
+Fiscal year ending **June 30, 2025**. Source: [NC Department of State Treasurer — AFIR](https://www.nctreasurer.com/local-government/financial-data/annual-financial-information-report).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# NC-County-Financial-Dashboard
+The raw Excel file was processed into `src/data/counties.json` using the `scripts/convert-data.js` script.
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+This builds the project and pushes the `dist/` folder to the `gh-pages` branch.
+
+## Tech
+
+React 19 · Vite 8 · Recharts 3
