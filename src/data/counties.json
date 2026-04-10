@@ -59,6 +59,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 26527047,
+      "pct": 0.4517737,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.65,
+      "effective_rate": 0.5491,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8448
     }
   },
   {
@@ -121,6 +133,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 8536855,
+      "pct": 0.37043659,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.597,
+      "effective_rate": 0.4864,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.8147
     }
   },
   {
@@ -183,6 +207,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 20302426,
+      "pct": 0.50773943,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.777,
+      "effective_rate": 0.7064,
+      "appraisal_year": 2018,
+      "sales_ratio": 0.9091
     }
   },
   {
@@ -245,6 +281,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 16219350,
+      "pct": 0.30600807,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.44,
+      "effective_rate": 0.3423,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.778
     }
   },
   {
@@ -307,6 +355,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 39219299,
+      "pct": 0.86704993,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4,
+      "effective_rate": 0.2618,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.6545
     }
   },
   {
@@ -369,6 +429,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 28830663,
+      "pct": 0.34393122,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.445,
+      "effective_rate": 0.4431,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9958
     }
   },
   {
@@ -431,6 +503,13 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": null,
+    "tax": {
+      "county_rate": 0.785,
+      "effective_rate": 0.5533,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.7049
     }
   },
   {
@@ -493,6 +572,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 130865893,
+      "pct": 0.40942885,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.342,
+      "effective_rate": 0.3073,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8985
     }
   },
   {
@@ -555,6 +646,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 79329002,
+      "pct": 0.18774072,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5466,
+      "effective_rate": 0.3374,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.6172
     }
   },
   {
@@ -617,6 +720,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 23890926,
+      "pct": 0.20947139,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.555,
+      "effective_rate": 0.4379,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.7891
     }
   },
   {
@@ -679,6 +794,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 265148160,
+      "pct": 0.64319599,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.576,
+      "effective_rate": 0.5418,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9406
     }
   },
   {
@@ -741,6 +868,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 20887877,
+      "pct": 0.21459635,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4975,
+      "effective_rate": 0.4774,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9596
     }
   },
   {
@@ -803,6 +942,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 22837228,
+      "pct": 0.90869282,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.73,
+      "effective_rate": 0.6178,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8463
     }
   },
   {
@@ -865,6 +1016,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 111649324,
+      "pct": 0.93124454,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.225,
+      "effective_rate": 0.2212,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9833
     }
   },
   {
@@ -927,6 +1090,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 127479462,
+      "pct": 0.53185318,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.3985,
+      "effective_rate": 0.3493,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8765
     }
   },
   {
@@ -989,6 +1164,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 102805360,
+      "pct": 0.54163383,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.6,
+      "effective_rate": 0.5704,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9506
     }
   },
   {
@@ -1051,6 +1238,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 16464753,
+      "pct": 0.58134964,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.695,
+      "effective_rate": 0.4877,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.7018
     }
   },
   {
@@ -1113,6 +1312,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 10325463,
+      "pct": 0.39442618,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.43,
+      "effective_rate": 0.2328,
+      "appraisal_year": 2018,
+      "sales_ratio": 0.5415
     }
   },
   {
@@ -1175,6 +1386,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 74699784,
+      "pct": 0.49101144,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4448,
+      "effective_rate": 0.3624,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8147
     }
   },
   {
@@ -1237,6 +1460,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 356331951,
+      "pct": 0.85916434,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.499,
+      "effective_rate": 0.5035,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.009
     }
   },
   {
@@ -1299,6 +1534,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 100017774,
+      "pct": 0.66142224,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.2632,
+      "effective_rate": 0.2607,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9907
     }
   },
   {
@@ -1361,6 +1608,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 137155257,
+      "pct": 0.68019928,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.54,
+      "effective_rate": 0.3648,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.6755
     }
   },
   {
@@ -1423,6 +1682,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 18491961,
+      "pct": 0.22301816,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.6486,
+      "effective_rate": 0.649,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0007
     }
   },
   {
@@ -1485,6 +1756,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 46436716,
+      "pct": 0.6732432,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.58,
+      "effective_rate": 0.5689,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9808
     }
   },
   {
@@ -1547,6 +1830,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 318363423,
+      "pct": 0.46710976,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5542,
+      "effective_rate": 0.5555,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0023
     }
   },
   {
@@ -1609,6 +1904,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 21245566,
+      "pct": 0.26073198,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.89,
+      "effective_rate": 0.8338,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9368
     }
   },
   {
@@ -1671,6 +1978,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 151386022,
+      "pct": 0.26592421,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5352,
+      "effective_rate": 0.5414,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0116
     }
   },
   {
@@ -1733,6 +2052,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 53896313,
+      "pct": 0.41786772,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.505,
+      "effective_rate": 0.4778,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9462
     }
   },
   {
@@ -1795,6 +2126,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 129436630,
+      "pct": 0.38163719,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.599,
+      "effective_rate": 0.5311,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8866
     }
   },
   {
@@ -1857,6 +2200,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 6806553,
+      "pct": 0.39809688,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.67,
+      "effective_rate": 0.6498,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9699
     }
   },
   {
@@ -1919,6 +2274,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 46080762,
+      "pct": 0.52711281,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.631,
+      "effective_rate": 0.6142,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9733
     }
   },
   {
@@ -1981,6 +2348,13 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": null,
+    "tax": {
+      "county_rate": 0.786,
+      "effective_rate": 0.5551,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.7062
     }
   },
   {
@@ -2043,6 +2417,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 362238549,
+      "pct": 0.46661933,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.7305,
+      "effective_rate": 0.499,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.6831
     }
   },
   {
@@ -2105,6 +2491,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 47049124,
+      "pct": 0.6409194,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.7,
+      "effective_rate": 0.6714,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9592
     }
   },
   {
@@ -2167,6 +2565,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 145251809,
+      "pct": 0.73377691,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.591,
+      "effective_rate": 0.4656,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.7878
     }
   },
   {
@@ -2229,6 +2639,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 71973198,
+      "pct": 0.65775982,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.55,
+      "effective_rate": 0.326,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.5927
     }
   },
   {
@@ -2291,6 +2713,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 81683061,
+      "pct": 0.40053207,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.431,
+      "effective_rate": 0.3763,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.873
     }
   },
   {
@@ -2353,6 +2787,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 209836698,
+      "pct": 0.72573321,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5,
+      "effective_rate": 0.4545,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.909
     }
   },
   {
@@ -2415,6 +2861,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 43197711,
+      "pct": 0.41960838,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.31,
+      "effective_rate": 0.3101,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0004
     }
   },
   {
@@ -2477,6 +2935,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 234340728,
+      "pct": 0.63472957,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.52,
+      "effective_rate": 0.5137,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9878
     }
   },
   {
@@ -2539,6 +3009,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 39392301,
+      "pct": 0.35911274,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.65,
+      "effective_rate": 0.5611,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8633
     }
   },
   {
@@ -2601,6 +3083,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 47964861,
+      "pct": 0.6101362,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.675,
+      "effective_rate": 0.6703,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9931
     }
   },
   {
@@ -2663,6 +3157,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 75681636,
+      "pct": 0.42386774,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.499,
+      "effective_rate": 0.4379,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8776
     }
   },
   {
@@ -2725,6 +3231,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 57457072,
+      "pct": 0.80012987,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.27,
+      "effective_rate": 0.228,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8446
     }
   },
   {
@@ -2787,6 +3305,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 35363113,
+      "pct": 0.98871955,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.72,
+      "effective_rate": 0.7163,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9949
     }
   },
   {
@@ -2849,6 +3379,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 24605401,
+      "pct": 0.36515861,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5675,
+      "effective_rate": 0.4374,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.7707
     }
   },
   {
@@ -2911,6 +3453,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 653663302,
+      "pct": 0.39140975,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4927,
+      "effective_rate": 0.4374,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8878
     }
   },
   {
@@ -2973,6 +3527,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 14866320,
+      "pct": 0.30488155,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.56,
+      "effective_rate": 0.4222,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.7539
     }
   },
   {
@@ -3035,6 +3601,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 52082327,
+      "pct": 0.34094817,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.295,
+      "effective_rate": 0.256,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8679
     }
   },
   {
@@ -3097,6 +3675,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 61963141,
+      "pct": 0.48728672,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.63,
+      "effective_rate": 0.5608,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.8902
     }
   },
   {
@@ -3159,6 +3749,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 437804289,
+      "pct": 1.03673327,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.306,
+      "effective_rate": 0.3054,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9981
     }
   },
   {
@@ -3221,6 +3823,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 187606969,
+      "pct": 0.63673818,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.655,
+      "effective_rate": 0.4985,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.761
     }
   },
   {
@@ -3283,6 +3897,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 58787839,
+      "pct": 0.2022907,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.6383,
+      "effective_rate": 0.6317,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9896
     }
   },
   {
@@ -3345,6 +3971,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 10525680,
+      "pct": 0.41446023,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.645,
+      "effective_rate": 0.4041,
+      "appraisal_year": 2020,
+      "sales_ratio": 0.6265
     }
   },
   {
@@ -3407,6 +4045,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 52525130,
+      "pct": 0.81409962,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.62,
+      "effective_rate": 0.4799,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.774
     }
   },
   {
@@ -3469,6 +4119,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 7728702,
+      "pct": 0.32840772,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.52,
+      "effective_rate": 0.4546,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.8742
     }
   },
   {
@@ -3531,6 +4193,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 26231235,
+      "pct": 0.31425333,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.63,
+      "effective_rate": 0.6286,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9977
     }
   },
   {
@@ -3593,6 +4267,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 92312351,
+      "pct": 0.44163732,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5663,
+      "effective_rate": 0.5436,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9599
     }
   },
   {
@@ -3655,6 +4341,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 15067319,
+      "pct": 0.39316747,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4277,
+      "effective_rate": 0.4297,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0047
     }
   },
   {
@@ -3717,6 +4415,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 66722735,
+      "pct": 0.3415838,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5,
+      "effective_rate": 0.3777,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.7555
     }
   },
   {
@@ -3779,6 +4489,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 152004469,
+      "pct": 0.7488599,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.58,
+      "effective_rate": 0.4963,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8557
     }
   },
   {
@@ -3841,6 +4563,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 60537367,
+      "pct": 0.75698543,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.454,
+      "effective_rate": 0.4069,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.8963
     }
   },
   {
@@ -3903,6 +4637,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 52417321,
+      "pct": 0.54973392,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.51,
+      "effective_rate": 0.493,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9666
     }
   },
   {
@@ -3965,6 +4711,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 24043226,
+      "pct": 0.35287761,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.625,
+      "effective_rate": 0.6232,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9972
     }
   },
   {
@@ -4027,6 +4785,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 1238258,
+      "pct": 0.14117227,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.87,
+      "effective_rate": 0.873,
+      "appraisal_year": 2025,
+      "sales_ratio": 1.0034
     }
   },
   {
@@ -4089,6 +4859,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 114791620,
+      "pct": 0.28043225,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.4342,
+      "effective_rate": 0.4335,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9985
     }
   },
   {
@@ -4151,6 +4933,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 32189586,
+      "pct": 0.51870893,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.7129,
+      "effective_rate": 0.6083,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.8532
     }
   },
   {
@@ -4213,6 +5007,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 855676368,
+      "pct": 0.41977575,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.5171,
+      "effective_rate": 0.4933,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9539
     }
   },
   {
@@ -4275,6 +5081,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 12122387,
+      "pct": 0.63167809,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.85,
+      "effective_rate": 0.81,
+      "appraisal_year": 2021,
+      "sales_ratio": 0.9529
     }
   },
   {
@@ -4337,6 +5155,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 57934480,
+      "pct": 0.59624176,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.318,
+      "effective_rate": 0.2104,
+      "appraisal_year": 2022,
+      "sales_ratio": 0.6617
     }
   },
   {
@@ -4399,6 +5229,18 @@
       "Public Safety": 367.39,
       "Other": 291.3,
       "Total Expenditures": 2041.1
+    },
+    "fb": {
+      "dollars": 75291513,
+      "pct": 0.47241204,
+      "grp_pct": 0.47434616,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.6259,
+      "effective_rate": 0.6243,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9975
     }
   },
   {
@@ -4461,6 +5303,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 39851787,
+      "pct": 0.3936964,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.42,
+      "effective_rate": 0.4138,
+      "appraisal_year": 2025,
+      "sales_ratio": 0.9853
     }
   },
   {
@@ -4523,6 +5377,18 @@
       "Public Safety": 594.13,
       "Other": 379.24,
       "Total Expenditures": 2107.91
+    },
+    "fb": {
+      "dollars": 34075836,
+      "pct": 0.24666838,
+      "grp_pct": 0.47823852,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.595,
+      "effective_rate": 0.553,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9293
     }
   },
   {
@@ -4585,6 +5451,18 @@
       "Public Safety": 705.51,
       "Other": 441.62,
       "Total Expenditures": 2499.7
+    },
+    "fb": {
+      "dollars": 20644715,
+      "pct": 0.39087176,
+      "grp_pct": 0.47747443,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.65,
+      "effective_rate": 0.4776,
+      "appraisal_year": 2023,
+      "sales_ratio": 0.7348
     }
   },
   {
@@ -4647,6 +5525,18 @@
       "Public Safety": 717.67,
       "Other": 452.3,
       "Total Expenditures": 3237.25
+    },
+    "fb": {
+      "dollars": 939919,
+      "pct": 0.02556908,
+      "grp_pct": 0.49502969,
+      "state_pct": 0.47582004
+    },
+    "tax": {
+      "county_rate": 0.52,
+      "effective_rate": 0.4778,
+      "appraisal_year": 2024,
+      "sales_ratio": 0.9188
     }
   }
 ]
