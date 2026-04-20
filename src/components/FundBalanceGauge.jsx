@@ -187,7 +187,7 @@ export default function FundBalanceGauge({ county, compare }) {
           fontSize: 32,
           fontWeight: 700,
           color: fillColor(county.fb.pct),
-          fontFamily: "'Barlow', 'DM Sans', sans-serif",
+          fontFamily: "'DM Sans', sans-serif",
           fontVariantNumeric: "tabular-nums",
           lineHeight: 1.1,
           marginBottom: 18,

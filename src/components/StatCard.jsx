@@ -61,7 +61,7 @@ export default function StatCard({ label, value, sub, accent, isMobile, trend })
         fontSize: isMobile ? 26 : 36,
         fontWeight: 700,
         color: accent ?? "#FFFFFF",
-        fontFamily: "'Barlow', 'DM Sans', sans-serif",
+        fontFamily: "'DM Sans', sans-serif",
         lineHeight: 1.1,
         letterSpacing: "-0.5px",
         fontVariantNumeric: "tabular-nums",
