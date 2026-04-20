@@ -26,3 +26,16 @@ dist-ssr
 *.sln
 *.sw?
 .gstack/
+
+# AI assistant session files
+.claude/
+
+# Alternate build output
+dist2/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Backup files
+*.bak

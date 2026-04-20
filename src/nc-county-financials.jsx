@@ -131,7 +131,7 @@ const SortIcon = ({ active, dir }) => (
   </span>
 );
 
-function DropdownItem({ icon, label, sub, onClick }) {
+function DropdownItem({ label, sub, onClick }) {
   return (
     <button
       onClick={onClick}
@@ -143,10 +143,9 @@ function DropdownItem({ icon, label, sub, onClick }) {
       onMouseEnter={e => { e.currentTarget.style.background = "#1A2840"; }}
       onMouseLeave={e => { e.currentTarget.style.background = "none"; }}
     >
-      <span style={{ marginRight: 10 }}>{icon}</span>
       <span style={{ fontWeight: 600 }}>{label}</span>
       {sub && (
-        <div style={{ fontSize: 10, color: "#4A6480", marginTop: 2, paddingLeft: 22 }}>{sub}</div>
+        <div style={{ fontSize: 10, color: "#4A6480", marginTop: 2 }}>{sub}</div>
       )}
     </button>
   );
@@ -319,7 +318,7 @@ export default function NCCountyFinancials() {
   const [selectedIdx, setSelectedIdx] = useState(() => {
     const p = new URLSearchParams(window.location.search);
     const n = p.get("county");
-    return n && NAME_TO_IDX[n] != null ? NAME_TO_IDX[n] : 0;
+    return n && NAME_TO_IDX[n] != null ? NAME_TO_IDX[n] : NAME_TO_IDX["Mecklenburg"] ?? 0;
   });
   const [compareIdx, setCompareIdx] = useState(() => {
     const p = new URLSearchParams(window.location.search);
@@ -439,6 +438,18 @@ export default function NCCountyFinancials() {
     [selectedIdx]
   );
 
+  const taxGroupMedianLabel = useMemo(() => {
+    if (county.tax?.county_rate == null) return null;
+    const rates = DATA
+      .filter(c => c.pg === county.pg && c.tax?.county_rate != null)
+      .map(c => c.tax.county_rate)
+      .sort((a, b) => a - b);
+    if (rates.length === 0) return null;
+    const mid = Math.floor(rates.length / 2);
+    const median = rates.length % 2 === 0 ? (rates[mid - 1] + rates[mid]) / 2 : rates[mid];
+    return `vs. $${median.toFixed(3)} group median`;
+  }, [county]);
+
   const sortedData = useMemo(() => {
     const col = TABLE_COLS.find(c => c.key === sortKey) ?? TABLE_COLS[3];
     return [...DATA].sort((a, b) => {
@@ -538,14 +549,14 @@ export default function NCCountyFinancials() {
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
                 <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#7A9AB8", fontWeight: 600 }}>North Carolina</span>
                 <span style={{ fontSize: 11, color: "rgba(255,255,255,0.15)" }}>|</span>
-                <span style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>FY2025 snapshot with county fallbacks</span>
+                <span style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>FY2025 AFIR Data (Source: NC Department of State Treasurer)</span>
               </div>
               <h1 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 22 : 30, fontWeight: 700, color: "#E2EAF4", margin: 0, letterSpacing: -0.5 }}>
-                County Financial Explorer
+                NC County Financial Explorer
               </h1>
               {!isMobile && (
                 <p style={{ fontSize: 13, color: "#7A9AB8", marginTop: 6, maxWidth: 600 }}>
-                  {DATA.length} counties — FY2025 AFIR data where available, with earlier AFIR fallbacks for non-filers.
+                  Compare revenues, expenditures, and fund balance across every NC county.
                 </p>
               )}
             </div>
@@ -595,21 +606,18 @@ export default function NCCountyFinancials() {
                   }}>
                     {/* Copy link */}
                     <DropdownItem
-                      icon="🔗"
                       label="Copy link"
                       sub={window.location.href.length > 50 ? window.location.href.slice(0, 50) + "…" : window.location.href}
                       onClick={handleCopyLink}
                     />
                     {/* Print / Save as PDF */}
                     <DropdownItem
-                      icon="🖨"
                       label="Print / Save as PDF"
                       sub="Choose 'Save as PDF' in the print dialog"
                       onClick={() => { setShareDropOpen(false); handlePrint(); }}
                     />
                     {/* Download CSV */}
                     <DropdownItem
-                      icon="⬇"
                       label="Download CSV"
                       sub={activeTab === "list" ? `All ${DATA.length} counties` : `${county.name} — all metrics`}
                       onClick={handleDownloadCSV}
@@ -783,9 +791,7 @@ export default function NCCountyFinancials() {
                     isMobile={isMobile}
                     label="Tax Rate (\$/100)"
                     value={fmtTaxRate(county.tax?.county_rate)}
-                    sub={county.tax?.effective_rate != null
-                      ? `eff. $${county.tax.effective_rate.toFixed(3)}`
-                      : undefined}
+                    sub={taxGroupMedianLabel ?? undefined}
                   />
                   <StatCard
                     isMobile={isMobile}
