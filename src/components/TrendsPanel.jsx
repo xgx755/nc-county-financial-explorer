@@ -69,11 +69,11 @@ function SectionHeader({ title, sub }) {
     <div style={{ marginBottom: 16 }}>
       <h3 style={{
         fontFamily: "'DM Sans', sans-serif",
-        fontSize: 17, fontWeight: 700, color: "#111827", margin: 0, letterSpacing: "-0.2px",
+        fontSize: 17, fontWeight: 700, color: "#E8EFF8", margin: 0, letterSpacing: "-0.2px",
       }}>
         {title}
       </h3>
-      {sub && <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 4 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: 12, color: "#4A6480", marginTop: 4 }}>{sub}</div>}
     </div>
   );
 }
@@ -83,10 +83,10 @@ function ChartCard({ children }) {
     <div
       className="card-hover"
       style={{
-        background: "#FFFFFF",
+        background: "#152030",
         borderRadius: 12,
-        border: "1px solid #E8E7E4",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         padding: "20px 20px 14px",
         marginBottom: 28,
       }}
@@ -100,14 +100,14 @@ function EmptyState({ message }) {
   return (
     <div style={{
       height: 160, display: "flex", alignItems: "center",
-      justifyContent: "center", color: "#9CA3AF", fontSize: 13,
+      justifyContent: "center", color: "#4A6480", fontSize: 13,
     }}>
       {message}
     </div>
   );
 }
 
-const AXIS_STYLE = { fill: "#9CA3AF", fontSize: 11 };
+const AXIS_STYLE = { fill: "#7A9AB8", fontSize: 11 };
 
 // ─── Custom tooltips ──────────────────────────────────────────────────────────
 
@@ -117,14 +117,14 @@ function RankTooltip({ active, payload }) {
   if (!d || d.rank == null) return null;
   return (
     <div style={{
-      background: "#FFFFFF", border: "1px solid #E8E7E4",
+      background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: 6, padding: "8px 12px", fontSize: 12,
-      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
+      boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
     }}>
-      <div style={{ color: "#1D4ED8", fontWeight: 700 }}>FY{d.year}</div>
-      <div style={{ color: "#111827" }}>Rank #{d.rank} of {d.peerCount}</div>
+      <div style={{ color: "#60A5FA", fontWeight: 700 }}>FY{d.year}</div>
+      <div style={{ color: "#E8EFF8" }}>Rank #{d.rank} of {d.peerCount}</div>
       {d.fb_pct != null && (
-        <div style={{ color: "#6B7280", fontSize: 11 }}>Fund Balance: {fmtFbPct(d.fb_pct)}</div>
+        <div style={{ color: "#7A9AB8", fontSize: 11 }}>Fund Balance: {fmtFbPct(d.fb_pct)}</div>
       )}
     </div>
   );
@@ -134,11 +134,11 @@ function MetricTooltip({ active, payload, label, isPercent, isCurrency }) {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: "#FFFFFF", border: "1px solid #E8E7E4",
+      background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: 6, padding: "8px 12px", fontSize: 12,
-      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
+      boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
     }}>
-      <div style={{ color: "#1D4ED8", fontWeight: 700 }}>FY{label}</div>
+      <div style={{ color: "#60A5FA", fontWeight: 700 }}>FY{label}</div>
       {payload.map(p => p.value != null && (
         <div key={p.name} style={{ color: p.color }}>
           {p.name}: {isPercent
@@ -191,7 +191,7 @@ export default function TrendsPanel({ county, history, isMobile }) {
 
   if (countyHistory.length === 0) {
     return (
-      <div style={{ padding: "40px 0", textAlign: "center", color: "#9CA3AF" }}>
+      <div style={{ padding: "40px 0", textAlign: "center", color: "#4A6480" }}>
         Trend data not available for {county.name}.
       </div>
     );
@@ -199,7 +199,7 @@ export default function TrendsPanel({ county, history, isMobile }) {
 
   if (filteredHistory.length === 0) {
     return (
-      <div style={{ padding: "40px 0", textAlign: "center", color: "#9CA3AF" }}>
+      <div style={{ padding: "40px 0", textAlign: "center", color: "#4A6480" }}>
         No data for {county.name} in this range.
       </div>
     );
@@ -248,9 +248,9 @@ export default function TrendsPanel({ county, history, isMobile }) {
             style={{
               padding: "7px 14px", borderRadius: 8, fontSize: 12,
               fontWeight: 600, cursor: "pointer", letterSpacing: 0.3,
-              border: "1px solid " + (rangeIdx === i ? "#1D4ED8" : "#E8E7E4"),
-              background: rangeIdx === i ? "rgba(29,78,216,0.06)" : "transparent",
-              color: rangeIdx === i ? "#1D4ED8" : "#6B7280",
+              border: "1px solid " + (rangeIdx === i ? "#60A5FA" : "rgba(255,255,255,0.12)"),
+              background: rangeIdx === i ? "rgba(96,165,250,0.1)" : "transparent",
+              color: rangeIdx === i ? "#60A5FA" : "#7A9AB8",
               transition: "all 0.15s ease",
             }}
           >
@@ -274,30 +274,30 @@ export default function TrendsPanel({ county, history, isMobile }) {
         ) : (
           <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
             <LineChart data={rankChartData} margin={{ top: 8, right: 16, bottom: 4, left: -4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
               <XAxis
                 dataKey="year" tickFormatter={fmtYear}
-                tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
+                tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false}
               />
               <YAxis
                 reversed
                 domain={[maxRankSeen + 1, 1]}
-                tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
+                tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false}
                 tickFormatter={v => `#${v}`}
                 allowDecimals={false} width={34}
               />
               {topQuartile && (
                 <ReferenceArea
                   y1={1} y2={topQuartile}
-                  fill="rgba(29,78,216,0.06)" fillOpacity={1}
-                  label={{ value: "Top quartile", position: "insideTopRight", fill: "#1D4ED8", fontSize: 10 }}
+                  fill="rgba(96,165,250,0.08)" fillOpacity={1}
+                  label={{ value: "Top quartile", position: "insideTopRight", fill: "#60A5FA", fontSize: 10 }}
                 />
               )}
               <Tooltip content={<RankTooltip />} />
               <Line
                 type="monotone" dataKey="rank"
-                stroke="#1D4ED8" strokeWidth={2.5}
-                dot={{ fill: "#1D4ED8", r: 4 }}
+                stroke="#60A5FA" strokeWidth={2.5}
+                dot={{ fill: "#60A5FA", r: 4 }}
                 activeDot={{ r: 6 }}
                 connectNulls={false}
                 isAnimationActive={false}
@@ -305,7 +305,7 @@ export default function TrendsPanel({ county, history, isMobile }) {
             </LineChart>
           </ResponsiveContainer>
         )}
-        <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 6 }}>
+        <div style={{ fontSize: 11, color: "#4A6480", marginTop: 6 }}>
           Ranked among {pg} counties that filed AFIR each year. Lower rank = stronger fund balance.
         </div>
       </ChartCard>
@@ -318,21 +318,21 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={fbChartData} margin={{ top: 8, right: 16, bottom: 4, left: -4 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `${v}%`} width={40} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} tickFormatter={v => `${v}%`} width={40} />
             <ReferenceLine
-              y={8} stroke="#DC2626" strokeDasharray="4 2"
-              label={{ value: "LGC 8%", position: "insideBottomLeft", fill: "#DC2626", fontSize: 10 }}
+              y={8} stroke="#F87171" strokeDasharray="4 2"
+              label={{ value: "LGC 8%", position: "insideBottomLeft", fill: "#F87171", fontSize: 10 }}
             />
             <Tooltip content={<MetricTooltip isPercent />} />
-            <Line type="monotone" dataKey={county.name} stroke="#1D4ED8" strokeWidth={2.5} dot={{ fill: "#1D4ED8", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#60A5FA" strokeWidth={2.5} dot={{ fill: "#60A5FA", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="rgba(255,255,255,0.25)" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#1D4ED8" }}>— {county.name}</span>
-          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
+          <span style={{ color: "#60A5FA" }}>— {county.name}</span>
+          <span style={{ color: "#4A6480" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
 
@@ -344,17 +344,17 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={revChartData} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
             <Tooltip content={<MetricTooltip isCurrency />} />
-            <Line type="monotone" dataKey={county.name} stroke="#1D4ED8" strokeWidth={2.5} dot={{ fill: "#1D4ED8", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#60A5FA" strokeWidth={2.5} dot={{ fill: "#60A5FA", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="rgba(255,255,255,0.25)" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#1D4ED8" }}>— {county.name}</span>
-          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
+          <span style={{ color: "#60A5FA" }}>— {county.name}</span>
+          <span style={{ color: "#4A6480" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
 
@@ -366,17 +366,17 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={expChartData} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
             <Tooltip content={<MetricTooltip isCurrency />} />
-            <Line type="monotone" dataKey={county.name} stroke="#D97706" strokeWidth={2.5} dot={{ fill: "#D97706", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#FBBF24" strokeWidth={2.5} dot={{ fill: "#FBBF24", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="rgba(255,255,255,0.25)" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#D97706" }}>— {county.name}</span>
-          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
+          <span style={{ color: "#FBBF24" }}>— {county.name}</span>
+          <span style={{ color: "#4A6480" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
     </div>

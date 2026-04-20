@@ -54,9 +54,9 @@ function fmtPC(n)    { return n != null ? "$" + Math.round(n).toLocaleString() :
 function fmtPop(n)   { return n != null ? n.toLocaleString() : "—"; }
 function fmtFbPct(v) { return v != null ? (v * 100).toFixed(1) + "%" : "—"; }
 
-const COLOR_STEPS   = ["#dbeafe", "#93c5fd", "#3b82f6", "#1d4ed8", "#1e3a8a"];
-const COLOR_MISSING = "#E5E7EB";
-const COLOR_DIMMED  = "#F3F4F6";
+const COLOR_STEPS   = ["#1e4d8c", "#1878b8", "#0fadd4", "#55d4e8", "#c2eaf5"];
+const COLOR_MISSING = "#1E2E40";
+const COLOR_DIMMED  = "#152030";
 
 function interpolateColor(t) {
   const n = COLOR_STEPS.length - 1;
@@ -69,10 +69,10 @@ function interpolateColor(t) {
 }
 
 const selectStyle = {
-  background: "#FFFFFF",
-  border: "1px solid #E8E7E4",
+  background: "#0E1922",
+  border: "1px solid rgba(255,255,255,0.12)",
   borderRadius: 8,
-  color: "#374151",
+  color: "#E8EFF8",
   fontSize: 12,
   fontWeight: 600,
   padding: "7px 28px 7px 12px",
@@ -80,7 +80,7 @@ const selectStyle = {
   outline: "none",
   appearance: "none",
   WebkitAppearance: "none",
-  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239CA3AF'/%3E%3C/svg%3E")`,
+  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234A6480'/%3E%3C/svg%3E")`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "right 10px center",
   minWidth: 160,
@@ -170,7 +170,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
 
       if (!county) {
         path.style.fill        = COLOR_MISSING;
-        path.style.stroke      = "#FFFFFF";
+        path.style.stroke      = "rgba(255,255,255,0.15)";
         path.style.strokeWidth = "0.8";
         path.style.opacity     = "1";
         path.style.cursor      = "default";
@@ -178,7 +178,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       }
       if (!inGroup) {
         path.style.fill        = COLOR_DIMMED;
-        path.style.stroke      = "#FFFFFF";
+        path.style.stroke      = "rgba(255,255,255,0.08)";
         path.style.strokeWidth = "0.8";
         path.style.opacity     = "0.6";
         path.style.cursor      = "default";
@@ -188,7 +188,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       path.style.fill        = mapMetric === "fb.pct" && county.fb?.pct == null
         ? COLOR_MISSING
         : (nameToColor[countyName] || COLOR_MISSING);
-      path.style.stroke      = isPanel ? "#1D4ED8" : isSelected ? "#1D4ED8" : "#FFFFFF";
+      path.style.stroke      = isPanel ? "#60A5FA" : isSelected ? "#60A5FA" : "rgba(255,255,255,0.15)";
       path.style.strokeWidth = isPanel ? "2.5"     : isSelected ? "1.5"     : "0.8";
       path.style.cursor      = "pointer";
     });
@@ -209,14 +209,14 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       const tt  = tooltipRef.current;
       if (!tt) return;
       const extraLine = mapMetric === "tax.effective_rate" && county?.tax
-        ? `<br/><span style="color:#9CA3AF;font-size:11px">nominal: $${county.tax.county_rate.toFixed(3)}</span>`
+        ? `<br/><span style="color:#4A6480;font-size:11px">nominal: $${county.tax.county_rate.toFixed(3)}</span>`
         : "";
       tt.innerHTML = county
-        ? `<strong style="color:#111827">${countyName}</strong>`
-          + `<span style="color:#6B7280"> — ${fmtTooltipValue(val, mapMetric) ?? "N/A"}</span>`
+        ? `<strong style="color:#E8EFF8">${countyName}</strong>`
+          + `<span style="color:#7A9AB8"> — ${fmtTooltipValue(val, mapMetric) ?? "N/A"}</span>`
           + extraLine
-        : `<strong style="color:#111827">${countyName}</strong>`
-          + `<span style="color:#9CA3AF"> — Not in AFIR dataset</span>`;
+        : `<strong style="color:#E8EFF8">${countyName}</strong>`
+          + `<span style="color:#4A6480"> — Not in AFIR dataset</span>`;
       tt.style.display = "block";
     }, { signal });
 
@@ -322,7 +322,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       {/* ── Controls row ── */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Color by
           </span>
           <div style={{ position: "relative" }}>
@@ -332,10 +332,10 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
           </div>
         </div>
 
-        <div style={{ width: 1, height: 24, background: "#E8E7E4" }} />
+        <div style={{ width: 1, height: 24, background: "rgba(255,255,255,0.1)" }} />
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Compare group
           </span>
           <div style={{ position: "relative" }}>
@@ -360,19 +360,19 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         ref={outerRef}
         style={{
           position: "relative",
-          background: "#F9FAFB",
+          background: "#0A1520",
           borderRadius: 12,
-          border: "1px solid #E8E7E4",
+          border: "1px solid rgba(255,255,255,0.08)",
           overflow: "hidden",
           aspectRatio: "2 / 1",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         }}
       >
         {svgVersion === 0 && (
           <div style={{
             position: "absolute", inset: 0,
             display: "flex", alignItems: "center", justifyContent: "center",
-            color: "#9CA3AF", fontSize: 13,
+            color: "#4A6480", fontSize: 13,
           }}>
             Loading map…
           </div>
@@ -386,11 +386,11 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
           ref={tooltipRef}
           style={{
             display: "none", position: "absolute",
-            background: "#FFFFFF", border: "1px solid #E8E7E4",
+            background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: 6, padding: "6px 10px",
-            fontSize: 12, color: "#111827",
+            fontSize: 12, color: "#E8EFF8",
             pointerEvents: "none", whiteSpace: "nowrap", zIndex: 10,
-            boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
           }}
         />
 
@@ -399,12 +399,12 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
           const d = dataByName[panelCounty.name];
           if (!d) return null;
           const fbPct   = d.fb?.pct;
-          const fbColor = fbPct == null ? "#9CA3AF" : fbPct < 0.08 ? "#DC2626" : fbPct <= 0.25 ? "#D97706" : "#059669";
+          const fbColor = fbPct == null ? "#4A6480" : fbPct < 0.08 ? "#F87171" : fbPct <= 0.25 ? "#FBBF24" : "#34D399";
           const rows = [
-            { label: "Population",   value: fmtPop(d.pop),                                  color: "#111827" },
-            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",          color: "#111827" },
-            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",     color: "#111827" },
-            { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#111827" },
+            { label: "Population",   value: fmtPop(d.pop),                                  color: "#E8EFF8" },
+            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",          color: "#E8EFF8" },
+            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",     color: "#E8EFF8" },
+            { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#E8EFF8" },
             { label: "Fund Balance", value: fmtFbPct(fbPct),                                 color: fbColor   },
           ];
           const isRight = panelSide === "right";
@@ -419,13 +419,13 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
                 [panelSide]: 0,
                 width: 230,
                 zIndex: 20,
-                background: "#FFFFFF",
+                background: "#152030",
                 backdropFilter: "blur(8px)",
-                borderLeft:  isRight ? "1px solid #E8E7E4" : "none",
-                borderRight: isRight ? "none" : "1px solid #E8E7E4",
+                borderLeft:  isRight ? "1px solid rgba(255,255,255,0.1)" : "none",
+                borderRight: isRight ? "none" : "1px solid rgba(255,255,255,0.1)",
                 boxShadow: isRight
-                  ? "-4px 0 16px rgba(0,0,0,0.08)"
-                  : "4px 0 16px rgba(0,0,0,0.08)",
+                  ? "-4px 0 20px rgba(0,0,0,0.5)"
+                  : "4px 0 20px rgba(0,0,0,0.5)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -436,32 +436,32 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
               {/* Header row */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 400, color: "#111827", fontFamily: "'DM Serif Display', serif", lineHeight: 1.2 }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#E8EFF8", fontFamily: "'DM Sans', sans-serif", lineHeight: 1.2 }}>
                     {d.name}
                   </div>
-                  <div style={{ fontSize: 10, color: "#9CA3AF", marginTop: 3 }}>{d.pg ?? "No AFIR snapshot"}</div>
+                  <div style={{ fontSize: 10, color: "#4A6480", marginTop: 3 }}>{d.pg ?? "No AFIR snapshot"}</div>
                 </div>
                 <button
                   onClick={closePanel}
                   title="Close"
                   style={{
-                    background: "none", border: "1px solid #E8E7E4",
-                    borderRadius: 5, color: "#6B7280", cursor: "pointer",
+                    background: "none", border: "1px solid rgba(255,255,255,0.12)",
+                    borderRadius: 5, color: "#7A9AB8", cursor: "pointer",
                     padding: "3px 7px", fontSize: 11, lineHeight: 1, flexShrink: 0,
                     transition: "all 0.15s ease",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.color = "#1D4ED8"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.color = "#6B7280"; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#60A5FA"; e.currentTarget.style.color = "#60A5FA"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "#7A9AB8"; }}
                 >
                   ✕
                 </button>
               </div>
 
               {/* Stat rows */}
-              <div style={{ borderTop: "1px solid #E8E7E4", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
                 {rows.map(({ label, value, color }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 11, color: "#6B7280" }}>{label}</span>
+                    <span style={{ fontSize: 11, color: "#4A6480" }}>{label}</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color, textAlign: "right" }}>{value}</span>
                   </div>
                 ))}
@@ -475,14 +475,14 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
                 }}
                 style={{
                   marginTop: 16,
-                  background: "none", border: "1px solid #E8E7E4",
-                  borderRadius: 6, color: "#1D4ED8", cursor: "pointer",
+                  background: "none", border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: 6, color: "#60A5FA", cursor: "pointer",
                   padding: "7px 10px", fontSize: 11, fontWeight: 600,
                   whiteSpace: "nowrap", width: "100%",
                   transition: "all 0.15s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.background = "rgba(29,78,216,0.04)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.background = "none"; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#60A5FA"; e.currentTarget.style.background = "rgba(96,165,250,0.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.background = "none"; }}
               >
                 View full data →
               </button>
@@ -495,8 +495,8 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, marginBottom: 8, flexWrap: "wrap" }}>
         {compareGroup !== "all" && (
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid #E8E7E4" }} />
-            <span style={{ fontSize: 10, color: "#9CA3AF" }}>Outside group</span>
+            <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid rgba(255,255,255,0.1)" }} />
+            <span style={{ fontSize: 10, color: "#4A6480" }}>Outside group</span>
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -504,21 +504,21 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
             width: 120, height: 12, borderRadius: 4,
             background: `linear-gradient(to right, ${COLOR_STEPS[0]}, ${COLOR_STEPS[COLOR_STEPS.length - 1]})`,
           }} />
-          <span style={{ fontSize: 10, color: "#6B7280" }}>
+          <span style={{ fontSize: 10, color: "#7A9AB8" }}>
             {fmtLegend(domain[0])} — {fmtLegend(domain[1])}
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid #E8E7E4" }} />
-          <span style={{ fontSize: 10, color: "#9CA3AF" }}>Not in AFIR dataset</span>
+          <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid rgba(255,255,255,0.1)" }} />
+          <span style={{ fontSize: 10, color: "#4A6480" }}>Not in AFIR dataset</span>
         </div>
         {mapMetric === "fb.pct" && (
-          <span style={{ fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
+          <span style={{ fontSize: 10, color: "#4A6480", fontStyle: "italic" }}>
             † Fund balance unavailable for Bladen &amp; Greene counties
           </span>
         )}
         {mapMetric === "tax.effective_rate" && (
-          <span style={{ fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
+          <span style={{ fontSize: 10, color: "#4A6480", fontStyle: "italic" }}>
             † Effective rates adjust for reappraisal cycle differences · Source: NC Dept. of Revenue 2025–26
           </span>
         )}

@@ -92,11 +92,11 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
         display: "flex", justifyContent: "space-between", alignItems: "baseline",
         marginBottom: 10, flexWrap: "wrap", gap: 4,
       }}>
-        <span style={{ fontSize: 10, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 1, fontWeight: 600 }}>
+        <span style={{ fontSize: 10, color: "#4A6480", textTransform: "uppercase", letterSpacing: 1, fontWeight: 600 }}>
           {metricLabel(metricKey)}
           {standalone && ` — ${county.pg}`}
         </span>
-        <span style={{ fontSize: 12, fontWeight: 700, color: "#1D4ED8" }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#60A5FA" }}>
           {rankLabel}
         </span>
       </div>
@@ -106,7 +106,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
           if (row.ellipsis) {
             return (
               <div key={row.key} style={{
-                fontSize: 11, color: "#D1D5DB",
+                fontSize: 11, color: "#4A6480",
                 padding: "2px 0 2px 30px",
                 letterSpacing: 1,
               }}>
@@ -128,20 +128,20 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               borderRadius: 5,
               marginBottom: 1,
               background: isSelected
-                ? "rgba(29, 78, 216, 0.06)"
+                ? "rgba(96, 165, 250, 0.1)"
                 : isCompare
-                ? "rgba(180, 83, 9, 0.06)"
+                ? "rgba(251, 146, 60, 0.1)"
                 : "transparent",
               borderLeft: isSelected
-                ? "2px solid #1D4ED8"
+                ? "2px solid #60A5FA"
                 : isCompare
-                ? "2px solid #B45309"
+                ? "2px solid #FB923C"
                 : "2px solid transparent",
             }}>
               <span style={{
                 width: 18,
                 fontSize: 10,
-                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#D1D5DB",
+                color: isSelected ? "#60A5FA" : isCompare ? "#FB923C" : "rgba(255,255,255,0.2)",
                 textAlign: "right",
                 flexShrink: 0,
                 fontVariantNumeric: "tabular-nums",
@@ -151,7 +151,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               <span style={{
                 flex: 1,
                 fontSize: 12,
-                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#6B7280",
+                color: isSelected ? "#60A5FA" : isCompare ? "#FB923C" : "#7A9AB8",
                 fontWeight: isSelected || isCompare ? 700 : 400,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -162,7 +162,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               <span style={{
                 fontSize: 12,
                 fontWeight: isSelected || isCompare ? 700 : 400,
-                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#9CA3AF",
+                color: isSelected ? "#60A5FA" : isCompare ? "#FB923C" : "#4A6480",
                 fontVariantNumeric: "tabular-nums",
                 flexShrink: 0,
               }}>
@@ -174,7 +174,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
       </div>
 
       {compare && !sameGroup && (
-        <div style={{ marginTop: 6, fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
+        <div style={{ marginTop: 6, fontSize: 10, color: "#4A6480", fontStyle: "italic" }}>
           {compare.name} ({compare.pg}) — different group, not ranked here.
         </div>
       )}
@@ -187,11 +187,11 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
     <div
       className="card-hover"
       style={{
-        background: "#FFFFFF",
+        background: "#152030",
         borderRadius: 12,
         padding: "16px 20px",
-        border: "1px solid #E8E7E4",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         marginBottom: 24,
       }}
     >

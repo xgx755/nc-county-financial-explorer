@@ -4,9 +4,9 @@ import {
 } from "recharts";
 import { REV_CATS, EXP_CATS } from "../constants.js";
 
-const ABOVE_COLOR = "#1D4ED8";
-const BELOW_COLOR = "#DC2626";
-const CMP_COLOR   = "#B45309";
+const ABOVE_COLOR = "#60A5FA";
+const BELOW_COLOR = "#F87171";
+const CMP_COLOR   = "#FB923C";
 
 function CustomTooltip({ active, payload, label, county, compareCounty, type }) {
   if (!active || !payload?.length) return null;
@@ -16,16 +16,16 @@ function CustomTooltip({ active, payload, label, county, compareCounty, type }) 
 
   return (
     <div style={{
-      background: "#FFFFFF",
-      border: "1px solid #E8E7E4",
+      background: "#1A2840",
+      border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: 6,
       padding: "8px 12px",
       fontSize: 12,
-      color: "#111827",
+      color: "#E8EFF8",
       maxWidth: 260,
-      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
+      boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
     }}>
-      <div style={{ fontWeight: 700, marginBottom: 6, color: "#111827" }}>{label}</div>
+      <div style={{ fontWeight: 700, marginBottom: 6, color: "#E8EFF8" }}>{label}</div>
       {payload.map((p, i) => {
         const delta = p.value;
         if (delta == null) return null;
@@ -73,10 +73,10 @@ export default function CategoryDeltaPanel({ county, type, isMobile, compareCoun
     <div
       className="card-hover"
       style={{
-        background: "#FFFFFF",
+        background: "#152030",
         borderRadius: 12,
-        border: "1px solid #E8E7E4",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         padding: isMobile ? "16px 12px" : "20px 24px",
         marginBottom: 24,
       }}
@@ -85,13 +85,13 @@ export default function CategoryDeltaPanel({ county, type, isMobile, compareCoun
         <div style={{
           fontSize: 12,
           fontWeight: 600,
-          color: "#111827",
+          color: "#E8EFF8",
           textTransform: "uppercase",
           letterSpacing: 1,
         }}>
           Per-Capita vs. Population Group Average
         </div>
-        <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 3 }}>
+        <div style={{ fontSize: 11, color: "#4A6480", marginTop: 3 }}>
           Population Group: {county.pg}
         </div>
       </div>
@@ -108,22 +108,22 @@ export default function CategoryDeltaPanel({ county, type, isMobile, compareCoun
               tickFormatter={v =>
                 (v >= 0 ? "+" : "−") + "$" + Math.round(Math.abs(v)).toLocaleString()
               }
-              tick={{ fontSize: 10, fill: "#9CA3AF" }}
-              axisLine={{ stroke: "#E8E7E4" }}
+              tick={{ fontSize: 10, fill: "#7A9AB8" }}
+              axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
               tickLine={false}
             />
             <YAxis
               type="category"
               dataKey="name"
               width={yAxisWidth}
-              tick={{ fontSize: isMobile ? 10 : 12, fill: "#6B7280" }}
+              tick={{ fontSize: isMobile ? 10 : 12, fill: "#7A9AB8" }}
               tickFormatter={v =>
                 isMobile && v.length > 16 ? v.slice(0, 14) + "…" : v
               }
               axisLine={false}
               tickLine={false}
             />
-            <ReferenceLine x={0} stroke="#E8E7E4" strokeWidth={1.5} />
+            <ReferenceLine x={0} stroke="rgba(255,255,255,0.15)" strokeWidth={1.5} />
             <Tooltip
               content={
                 <CustomTooltip
@@ -147,7 +147,7 @@ export default function CategoryDeltaPanel({ county, type, isMobile, compareCoun
 
       {compareCounty && (
         <div style={{
-          display: "flex", gap: 16, fontSize: 11, color: "#9CA3AF",
+          display: "flex", gap: 16, fontSize: 11, color: "#4A6480",
           marginTop: 8, flexWrap: "wrap",
         }}>
           <span>

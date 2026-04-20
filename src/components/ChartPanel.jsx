@@ -37,9 +37,9 @@ const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0];
   return (
-    <div style={{ background: "#FFFFFF", border: "1px solid #E8E7E4", borderRadius: 8, padding: "10px 14px", color: "#111827", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+    <div style={{ background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 14px", color: "#E8EFF8", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}>
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{d.name || d.payload?.name}</div>
-      <div style={{ color: "#6B7280" }}>{fmt(d.value)}</div>
+      <div style={{ color: "#7A9AB8" }}>{fmt(d.value)}</div>
     </div>
   );
 };
@@ -47,10 +47,10 @@ const CustomTooltip = ({ active, payload }) => {
 const PCTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: "#FFFFFF", border: "1px solid #E8E7E4", borderRadius: 8, padding: "10px 14px", color: "#111827", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+    <div style={{ background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 14px", color: "#E8EFF8", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}>
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{label}</div>
       {payload.map((p, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, color: "#6B7280" }}>
+        <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, color: "#7A9AB8" }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.color, display: "inline-block" }} />
           <span>{p.dataKey}: {fmtPC(p.value)}</span>
         </div>
@@ -80,7 +80,7 @@ export default function ChartPanel({
 }) {
   return (
     <div style={{ marginBottom: 32 }}>
-      <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 15 : 17, color: "#111827", marginBottom: 16, fontWeight: 700, letterSpacing: "-0.2px" }}>
+      <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 15 : 17, color: "#E8EFF8", marginBottom: 16, fontWeight: 700, letterSpacing: "-0.2px" }}>
         {title}
       </h3>
       <div style={{ display: "flex", gap: 14, flexDirection: isMobile ? "column" : "row" }}>
@@ -90,10 +90,10 @@ export default function ChartPanel({
           className="card-hover"
           style={{
             flex: isMobile ? "1 1 auto" : "0 0 300px",
-            background: "#FFFFFF",
+            background: "#152030",
             borderRadius: 12, padding: isMobile ? 14 : 20,
-            border: "1px solid #E8E7E4",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.07)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
           }}
         >
           <ResponsiveContainer width="100%" height={isMobile ? 200 : 260}>
@@ -102,7 +102,7 @@ export default function ChartPanel({
                 data={pieData} cx="50%" cy="50%"
                 innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 80 : 105}
                 dataKey="value" labelLine={false} label={PieLabel}
-                strokeWidth={2} stroke="#FFFFFF"
+                strokeWidth={2} stroke="#152030"
               >
                 {pieData.map((d, i) => <Cell key={i} fill={PALETTE[d.name]} />)}
               </Pie>
@@ -111,7 +111,7 @@ export default function ChartPanel({
           </ResponsiveContainer>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 12px", marginTop: 8 }}>
             {cats.map(c => (
-              <div key={c} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#9CA3AF" }}>
+              <div key={c} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#4A6480" }}>
                 <span style={{ width: 8, height: 8, borderRadius: 2, background: PALETTE[c], display: "inline-block", flexShrink: 0 }} />
                 {c}
               </div>
@@ -124,37 +124,37 @@ export default function ChartPanel({
           className="card-hover"
           style={{
             flex: 1, minWidth: 0,
-            background: "#FFFFFF",
+            background: "#152030",
             borderRadius: 12, padding: isMobile ? 14 : 20,
-            border: "1px solid #E8E7E4",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.07)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
           }}
         >
-          <div style={{ fontSize: 10, color: "#9CA3AF", marginBottom: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1.2 }}>
+          <div style={{ fontSize: 10, color: "#4A6480", marginBottom: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1.2 }}>
             Per Capita vs Group Average
           </div>
           <ResponsiveContainer width="100%" height={isMobile ? 200 : 260}>
             <BarChart data={barData} barGap={2}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "#9CA3AF", fontSize: isMobile ? 9 : 10 }}
-                axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
+                tick={{ fill: "#7A9AB8", fontSize: isMobile ? 9 : 10 }}
+                axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false}
                 angle={-30} textAnchor="end" height={isMobile ? 48 : 60}
               />
               <YAxis
-                tick={{ fill: "#9CA3AF", fontSize: isMobile ? 9 : 10 }}
-                axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
+                tick={{ fill: "#7A9AB8", fontSize: isMobile ? 9 : 10 }}
+                axisLine={{ stroke: "rgba(255,255,255,0.08)" }} tickLine={false}
                 tickFormatter={v => `$${v}`}
                 width={isMobile ? 42 : 60}
               />
               <Tooltip content={<PCTooltip />} />
               <Bar dataKey="County" fill={barColor} radius={[3, 3, 0, 0]} name={countyName} />
-              <Bar dataKey="Group Avg" fill="#D1D5DB" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="Group Avg" fill="rgba(255,255,255,0.2)" radius={[3, 3, 0, 0]} />
               {compareCounty && (
                 <Bar dataKey={compareCounty.name} fill={compareColor} radius={[3, 3, 0, 0]} />
               )}
-              <Legend wrapperStyle={{ fontSize: 11, color: "#9CA3AF" }} />
+              <Legend wrapperStyle={{ fontSize: 11, color: "#7A9AB8" }} />
             </BarChart>
           </ResponsiveContainer>
         </div>

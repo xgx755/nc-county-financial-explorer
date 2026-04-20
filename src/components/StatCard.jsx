@@ -21,7 +21,7 @@ function Sparkline({ trend }) {
       <polyline
         points={points}
         fill="none"
-        stroke="#1D4ED8"
+        stroke="#60A5FA"
         strokeWidth="1.5"
         strokeLinejoin="round"
         strokeLinecap="round"
@@ -36,11 +36,11 @@ export default function StatCard({ label, value, sub, accent, isMobile, trend })
     <div
       className="card-hover"
       style={{
-        background: "#FFFFFF",
+        background: "#152030",
         borderRadius: 12,
         padding: isMobile ? "16px 18px" : "22px 24px",
-        border: "1px solid #E8E7E4",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         flex: 1,
         minWidth: isMobile ? "calc(50% - 6px)" : 160,
         boxSizing: "border-box",
@@ -50,7 +50,7 @@ export default function StatCard({ label, value, sub, accent, isMobile, trend })
         fontSize: 10,
         textTransform: "uppercase",
         letterSpacing: 1.5,
-        color: "#9CA3AF",
+        color: "#4A6480",
         marginBottom: 8,
         fontWeight: 600,
         fontFamily: "'DM Sans', sans-serif",
@@ -58,19 +58,20 @@ export default function StatCard({ label, value, sub, accent, isMobile, trend })
         {label}
       </div>
       <div style={{
-        fontSize: isMobile ? 22 : 28,
+        fontSize: isMobile ? 26 : 36,
         fontWeight: 700,
-        color: accent ?? "#111827",
-        fontFamily: "'DM Sans', sans-serif",
+        color: accent ?? "#FFFFFF",
+        fontFamily: "'Barlow', 'DM Sans', sans-serif",
         lineHeight: 1.1,
         letterSpacing: "-0.5px",
+        fontVariantNumeric: "tabular-nums",
       }}>
         {value}
       </div>
       {sub && (
         <div style={{
           fontSize: 12,
-          color: "#9CA3AF",
+          color: "#7A9AB8",
           marginTop: 5,
           fontFamily: "'DM Sans', sans-serif",
         }}>

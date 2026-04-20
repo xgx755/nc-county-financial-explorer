@@ -21,9 +21,9 @@ function trackDomain(county, compare) {
 }
 
 function fillColor(pct) {
-  if (pct < LGC_FBA_MIN) return "#DC2626";
-  if (pct <= 0.25) return "#D97706";
-  return "#059669";
+  if (pct < LGC_FBA_MIN) return "#F87171";
+  if (pct <= 0.25) return "#FBBF24";
+  return "#34D399";
 }
 
 function statusLabel(pct) {
@@ -73,7 +73,7 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
       <div style={{
         position: "relative",
         height: trackH,
-        background: "#EEF0F2",
+        background: "rgba(255,255,255,0.1)",
         borderRadius: 6,
         overflow: "visible",
       }}>
@@ -96,7 +96,7 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
           top: -3,
           width: 2,
           height: trackH + 6,
-          background: "rgba(0,0,0,0.2)",
+          background: "rgba(255,255,255,0.3)",
           borderRadius: 1,
         }} />
 
@@ -108,7 +108,7 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
             top: -3,
             width: 2,
             height: trackH + 6,
-            background: "#D97706",
+            background: "#FBBF24",
             borderRadius: 1,
           }} />
         )}
@@ -120,14 +120,14 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
         height: 20,
         marginTop: 4,
         fontSize: 10,
-        color: "#9CA3AF",
+        color: "#4A6480",
       }}>
         <span style={{
           position: "absolute",
           left: toX(LGC_FBA_MIN),
           transform: "translateX(-50%)",
           whiteSpace: "nowrap",
-          color: "#6B7280",
+          color: "#7A9AB8",
         }}>
           LGC Min 8%
         </span>
@@ -138,7 +138,7 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
             left: toX(grp_pct),
             transform: "translateX(-50%)",
             whiteSpace: "nowrap",
-            color: "#D97706",
+            color: "#FBBF24",
           }}>
             Group Avg {fmtFbPct(grp_pct)}
           </span>
@@ -162,11 +162,11 @@ export default function FundBalanceGauge({ county, compare }) {
     <div
       className="card-hover"
       style={{
-        background: "#FFFFFF",
+        background: "#152030",
         borderRadius: 12,
         padding: "22px 24px",
-        border: "1px solid #E8E7E4",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         height: "100%",
         boxSizing: "border-box",
       }}
@@ -175,7 +175,7 @@ export default function FundBalanceGauge({ county, compare }) {
         fontSize: 10,
         textTransform: "uppercase",
         letterSpacing: 1.5,
-        color: "#9CA3AF",
+        color: "#4A6480",
         marginBottom: 8,
         fontWeight: 600,
       }}>
@@ -184,10 +184,11 @@ export default function FundBalanceGauge({ county, compare }) {
 
       {hasFb && (
         <div style={{
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 700,
           color: fillColor(county.fb.pct),
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Barlow', 'DM Sans', sans-serif",
+          fontVariantNumeric: "tabular-nums",
           lineHeight: 1.1,
           marginBottom: 18,
           display: "flex",
@@ -201,7 +202,7 @@ export default function FundBalanceGauge({ county, compare }) {
             {statusLabel(county.fb.pct)}
           </span>
           {county.fb.grp_pct != null && (
-            <span style={{ fontSize: 12, fontWeight: 400, color: "#9CA3AF" }}>
+            <span style={{ fontSize: 12, fontWeight: 400, color: "#4A6480" }}>
               Group avg {fmtFbPct(county.fb.grp_pct)}
             </span>
           )}
@@ -210,17 +211,17 @@ export default function FundBalanceGauge({ county, compare }) {
 
       {!hasFb ? (
         <div style={{
-          background: "#FFFBEB",
-          border: "1px solid #FDE68A",
-          borderLeft: "3px solid #D97706",
+          background: "rgba(251,146,60,0.08)",
+          border: "1px solid rgba(251,146,60,0.2)",
+          borderLeft: "3px solid #FBBF24",
           padding: "12px 14px",
           borderRadius: 6,
         }}>
           <span style={{ color: "#D97706", marginRight: 8 }}>⚠</span>
-          <strong style={{ color: "#92400E", fontSize: 13 }}>
+          <strong style={{ color: "#E8EFF8", fontSize: 13 }}>
             Fund balance data not available
           </strong>
-          <p style={{ color: "#92400E", margin: "6px 0 0", fontSize: 12, opacity: 0.8 }}>
+          <p style={{ color: "#7A9AB8", margin: "6px 0 0", fontSize: 12 }}>
             {county.name} County did not file an audit that was included in
             this AFIR dataset.
           </p>
@@ -238,7 +239,7 @@ export default function FundBalanceGauge({ county, compare }) {
             <div style={{ marginTop: 10 }}>
               <div style={{
                 fontSize: 10,
-                color: "#B45309",
+                color: "#FB923C",
                 marginBottom: 6,
                 textTransform: "uppercase",
                 letterSpacing: 1,
