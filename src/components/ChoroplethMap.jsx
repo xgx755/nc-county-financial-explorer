@@ -4,7 +4,7 @@
 // 1. INITIAL COLOR BUG — svgVersion counter (not boolean) ensures Effect 2 re-runs
 //    after *every* SVG injection. React StrictMode double-invokes Effect 1, which
 //    re-injects a fresh SVG (wiping inline styles) but the old boolean was already
-//    true so Effect 2 never re-ran. A counter always increments → always re-paints.
+//    true so Effect 2 never re-ran. A counter always increments → always triggers Effect 2.
 //
 // 2. CLICK-ZOOM BUG — container gets aspect-ratio: 2/1 so its height never changes.
 //    SVG uses height:100% instead of height:auto. Zoom is a smooth animated viewBox
@@ -54,9 +54,9 @@ function fmtPC(n)    { return n != null ? "$" + Math.round(n).toLocaleString() :
 function fmtPop(n)   { return n != null ? n.toLocaleString() : "—"; }
 function fmtFbPct(v) { return v != null ? (v * 100).toFixed(1) + "%" : "—"; }
 
-const COLOR_STEPS   = ["#cce8f4", "#93cce0", "#5FA8D3", "#2d7aad", "#0d4a7a"];
-const COLOR_MISSING = "#1a2a3a";
-const COLOR_DIMMED  = "#0f1c2d";
+const COLOR_STEPS   = ["#dbeafe", "#93c5fd", "#3b82f6", "#1d4ed8", "#1e3a8a"];
+const COLOR_MISSING = "#E5E7EB";
+const COLOR_DIMMED  = "#F3F4F6";
 
 function interpolateColor(t) {
   const n = COLOR_STEPS.length - 1;
@@ -69,10 +69,10 @@ function interpolateColor(t) {
 }
 
 const selectStyle = {
-  background: "#0a1628",
-  border: "1px solid #1a3456",
+  background: "#FFFFFF",
+  border: "1px solid #E8E7E4",
   borderRadius: 8,
-  color: "#c8d8e8",
+  color: "#374151",
   fontSize: 12,
   fontWeight: 600,
   padding: "7px 28px 7px 12px",
@@ -80,7 +80,7 @@ const selectStyle = {
   outline: "none",
   appearance: "none",
   WebkitAppearance: "none",
-  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234a6d8c'/%3E%3C/svg%3E")`,
+  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239CA3AF'/%3E%3C/svg%3E")`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "right 10px center",
   minWidth: 160,
@@ -103,15 +103,11 @@ function animateViewBox(svg, targetVBStr, duration = 300) {
 }
 
 export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
-  // BUG 1 FIX: counter not boolean.
-  // StrictMode invokes Effect 1 twice: the second run re-injects a fresh SVG
-  // (clearing all inline fills) but setSvgLoaded(true) was idempotent → Effect 2
-  // never re-ran → map stayed uncolored. With a counter every injection is unique.
   const [svgVersion,   setSvgVersion]   = useState(0);
-  const [mapMetric,    setMapMetric]    = useState("pr.Total Revenue");
+  const [mapMetric,    setMapMetric]    = useState("tax.effective_rate");
   const [compareGroup, setCompareGroup] = useState("all");
   const [panelCounty,  setPanelCounty]  = useState(null);
-  const [panelSide,    setPanelSide]    = useState("right"); // which edge the sidebar sits on
+  const [panelSide,    setPanelSide]    = useState("right");
 
   const containerRef   = useRef(null);
   const outerRef       = useRef(null);
@@ -149,13 +145,11 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         if (svg) {
           svg.removeAttribute("width");
           svg.removeAttribute("height");
-          // height:100% (not auto) — keeps SVG filling the fixed-ratio container
-          // so viewBox zooms never change the container's rendered dimensions.
           svg.style.cssText = "width:100%;height:100%;display:block;";
           origViewBoxRef.current = svg.getAttribute("viewBox") ?? "0 0 960 480";
           svgRef.current = svg;
         }
-        setSvgVersion(v => v + 1); // always increment → always triggers Effect 2
+        setSvgVersion(v => v + 1);
       })
       .catch(console.error);
   }, []);
@@ -176,17 +170,17 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
 
       if (!county) {
         path.style.fill        = COLOR_MISSING;
-        path.style.stroke      = "#0a1628";
-        path.style.strokeWidth = "0.5";
+        path.style.stroke      = "#FFFFFF";
+        path.style.strokeWidth = "0.8";
         path.style.opacity     = "1";
         path.style.cursor      = "default";
         return;
       }
       if (!inGroup) {
         path.style.fill        = COLOR_DIMMED;
-        path.style.stroke      = "#0a1628";
-        path.style.strokeWidth = "0.5";
-        path.style.opacity     = "0.55";
+        path.style.stroke      = "#FFFFFF";
+        path.style.strokeWidth = "0.8";
+        path.style.opacity     = "0.6";
         path.style.cursor      = "default";
         return;
       }
@@ -194,8 +188,8 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       path.style.fill        = mapMetric === "fb.pct" && county.fb?.pct == null
         ? COLOR_MISSING
         : (nameToColor[countyName] || COLOR_MISSING);
-      path.style.stroke      = isPanel ? "#ffffff" : isSelected ? "#93cce0" : "#0a1628";
-      path.style.strokeWidth = isPanel ? "2.5"     : isSelected ? "1.5"     : "0.5";
+      path.style.stroke      = isPanel ? "#1D4ED8" : isSelected ? "#1D4ED8" : "#FFFFFF";
+      path.style.strokeWidth = isPanel ? "2.5"     : isSelected ? "1.5"     : "0.8";
       path.style.cursor      = "pointer";
     });
 
@@ -210,19 +204,19 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       const county     = dataByName[countyName];
       const inGroup    = compareGroup === "all" || county?.pg === compareGroup;
       if (!inGroup) return;
-      path.style.opacity = "0.72";
+      path.style.opacity = "0.75";
       const val = county ? getMetricValue(county, mapMetric) : null;
       const tt  = tooltipRef.current;
       if (!tt) return;
       const extraLine = mapMetric === "tax.effective_rate" && county?.tax
-        ? `<br/><span style="color:#6b8aad;font-size:11px">nominal: $${county.tax.county_rate.toFixed(3)}</span>`
+        ? `<br/><span style="color:#9CA3AF;font-size:11px">nominal: $${county.tax.county_rate.toFixed(3)}</span>`
         : "";
       tt.innerHTML = county
-        ? `<strong style="color:#e8f1f8">${countyName}</strong>`
-          + `<span style="color:#8aa4bc"> — ${fmtTooltipValue(val, mapMetric) ?? "N/A"}</span>`
+        ? `<strong style="color:#111827">${countyName}</strong>`
+          + `<span style="color:#6B7280"> — ${fmtTooltipValue(val, mapMetric) ?? "N/A"}</span>`
           + extraLine
-        : `<strong style="color:#e8f1f8">${countyName}</strong>`
-          + `<span style="color:#4a6d8c"> — Not in AFIR dataset</span>`;
+        : `<strong style="color:#111827">${countyName}</strong>`
+          + `<span style="color:#9CA3AF"> — Not in AFIR dataset</span>`;
       tt.style.display = "block";
     }, { signal });
 
@@ -245,7 +239,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         const countyName = (path.getAttribute("id") || "").replace(/_/g, " ");
         const county     = dataByName[countyName];
         const inGroup    = compareGroup === "all" || county?.pg === compareGroup;
-        path.style.opacity = inGroup ? "1" : "0.55";
+        path.style.opacity = inGroup ? "1" : "0.6";
       }
       const tt = tooltipRef.current;
       if (tt) tt.style.display = "none";
@@ -253,11 +247,8 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
 
     // ── Click: zoom + sidebar ────────────────────────────────────────────
     svg.addEventListener("click", (e) => {
-      // Clicking the sidebar overlay stops propagation to SVG, so this only
-      // fires for genuine map-area clicks.
       const path = e.target.closest("path");
 
-      // Background click (or uncolored county) → zoom out
       if (!path) {
         if (panelCounty && origViewBoxRef.current && svgRef.current) {
           animateViewBox(svgRef.current, origViewBoxRef.current);
@@ -278,36 +269,28 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         return;
       }
 
-      // Same county clicked again → toggle (zoom out)
       if (panelCounty?.name === countyName) {
         animateViewBox(svgRef.current, origViewBoxRef.current);
         setPanelCounty(null);
         return;
       }
 
-      // New county → subtle zoom + position sidebar ────────────────────
       if (!origViewBoxRef.current || !svgRef.current) return;
       const [ox, oy, ow, oh] = origViewBoxRef.current.split(" ").map(Number);
       const bbox = path.getBBox();
       const cx   = bbox.x + bbox.width  / 2;
       const cy   = bbox.y + bbox.height / 2;
 
-      // 25% zoom-in — very subtle (75% of map still visible)
       const zW = ow * 0.75;
       const zH = oh * 0.75;
 
-      // County in the right half of the map → sidebar on the LEFT side
-      // County in the left  half             → sidebar on the RIGHT side
       const isRightCounty = cx > ow / 2;
       const side = isRightCounty ? "left" : "right";
 
-      // Offset the viewBox horizontally so the county sits clear of the sidebar.
-      // P_x = where (as a fraction of zW) the county centre should land.
       const P_x  = isRightCounty ? 0.62 : 0.38;
       const rawX = cx - zW * P_x;
       const rawY = cy - zH * 0.5;
 
-      // Soft-clamp: small overshoot allowed to avoid awkward dead-space at edges
       const vbX = Math.max(ox - 40, Math.min(ox + ow - zW + 40, rawX));
       const vbY = Math.max(oy - 20, Math.min(oy + oh - zH + 20, rawY));
 
@@ -328,7 +311,6 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
     return "$" + Math.round(v).toLocaleString();
   };
 
-  // Shared close/zoom-out action
   const closePanel = () => {
     if (svgRef.current && origViewBoxRef.current)
       animateViewBox(svgRef.current, origViewBoxRef.current, 300);
@@ -340,7 +322,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       {/* ── Controls row ── */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#4a6d8c", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 11, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Color by
           </span>
           <div style={{ position: "relative" }}>
@@ -350,10 +332,10 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
           </div>
         </div>
 
-        <div style={{ width: 1, height: 24, background: "#1a3456" }} />
+        <div style={{ width: 1, height: 24, background: "#E8E7E4" }} />
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#4a6d8c", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 11, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Compare group
           </span>
           <div style={{ position: "relative" }}>
@@ -373,25 +355,24 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         </div>
       </div>
 
-      {/* ── Map container ────────────────────────────────────────────────────
-           aspect-ratio: 2/1 locks the container to landscape — viewBox changes
-           only re-frame the SVG, they no longer resize the container.           ── */}
+      {/* ── Map container ── */}
       <div
         ref={outerRef}
         style={{
           position: "relative",
-          background: "#060e1a",
+          background: "#F9FAFB",
           borderRadius: 12,
-          border: "1px solid #1a3456",
+          border: "1px solid #E8E7E4",
           overflow: "hidden",
           aspectRatio: "2 / 1",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
         }}
       >
         {svgVersion === 0 && (
           <div style={{
             position: "absolute", inset: 0,
             display: "flex", alignItems: "center", justifyContent: "center",
-            color: "#4a6d8c", fontSize: 13,
+            color: "#9CA3AF", fontSize: 13,
           }}>
             Loading map…
           </div>
@@ -405,33 +386,32 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
           ref={tooltipRef}
           style={{
             display: "none", position: "absolute",
-            background: "#0d1e2e", border: "1px solid #2a3a4a",
+            background: "#FFFFFF", border: "1px solid #E8E7E4",
             borderRadius: 6, padding: "6px 10px",
-            fontSize: 12, color: "#c8d8e8",
+            fontSize: 12, color: "#111827",
             pointerEvents: "none", whiteSpace: "nowrap", zIndex: 10,
+            boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
           }}
         />
 
-        {/* ── Sidebar panel ─────────────────────────────────────────────────
-             Full-height panel that slides in from the left or right edge.
-             The SVG viewBox is already offset to keep the county clear of it.    ── */}
+        {/* ── Sidebar panel ── */}
         {panelCounty && (() => {
           const d = dataByName[panelCounty.name];
           if (!d) return null;
           const fbPct   = d.fb?.pct;
-          const fbColor = fbPct == null ? "#4a6d8c" : fbPct < 0.08 ? "#AE2012" : fbPct <= 0.25 ? "#EE9B00" : "#62B6CB";
+          const fbColor = fbPct == null ? "#9CA3AF" : fbPct < 0.08 ? "#DC2626" : fbPct <= 0.25 ? "#D97706" : "#059669";
           const rows = [
-            { label: "Population",   value: fmtPop(d.pop),                                  color: "#e8f1f8" },
-            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",          color: "#e8f1f8" },
-            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",     color: "#e8f1f8" },
-            { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#e8f1f8" },
+            { label: "Population",   value: fmtPop(d.pop),                                  color: "#111827" },
+            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",          color: "#111827" },
+            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",     color: "#111827" },
+            { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#111827" },
             { label: "Fund Balance", value: fmtFbPct(fbPct),                                 color: fbColor   },
           ];
           const isRight = panelSide === "right";
           return (
             <div
               className={`map-sidebar-${panelSide}`}
-              onClick={e => e.stopPropagation()} // prevent SVG click-through
+              onClick={e => e.stopPropagation()}
               style={{
                 position: "absolute",
                 top: 0,
@@ -439,12 +419,13 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
                 [panelSide]: 0,
                 width: 230,
                 zIndex: 20,
-                background: isRight
-                  ? "linear-gradient(to left,  rgba(6,14,26,0.97) 82%, rgba(6,14,26,0.55))"
-                  : "linear-gradient(to right, rgba(6,14,26,0.97) 82%, rgba(6,14,26,0.55))",
-                backdropFilter: "blur(6px)",
-                borderLeft:  isRight ? "1px solid rgba(42,74,106,0.55)" : "none",
-                borderRight: isRight ? "none" : "1px solid rgba(42,74,106,0.55)",
+                background: "#FFFFFF",
+                backdropFilter: "blur(8px)",
+                borderLeft:  isRight ? "1px solid #E8E7E4" : "none",
+                borderRight: isRight ? "none" : "1px solid #E8E7E4",
+                boxShadow: isRight
+                  ? "-4px 0 16px rgba(0,0,0,0.08)"
+                  : "4px 0 16px rgba(0,0,0,0.08)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -455,31 +436,32 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
               {/* Header row */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: "#e8f1f8", fontFamily: "'Playfair Display', serif", lineHeight: 1.2 }}>
+                  <div style={{ fontSize: 15, fontWeight: 400, color: "#111827", fontFamily: "'DM Serif Display', serif", lineHeight: 1.2 }}>
                     {d.name}
                   </div>
-                  <div style={{ fontSize: 10, color: "#4a6d8c", marginTop: 3 }}>{d.pg ?? "No AFIR snapshot"}</div>
+                  <div style={{ fontSize: 10, color: "#9CA3AF", marginTop: 3 }}>{d.pg ?? "No AFIR snapshot"}</div>
                 </div>
                 <button
                   onClick={closePanel}
                   title="Close"
                   style={{
-                    background: "none", border: "1px solid #1a3456",
-                    borderRadius: 5, color: "#4a6d8c", cursor: "pointer",
+                    background: "none", border: "1px solid #E8E7E4",
+                    borderRadius: 5, color: "#6B7280", cursor: "pointer",
                     padding: "3px 7px", fontSize: 11, lineHeight: 1, flexShrink: 0,
+                    transition: "all 0.15s ease",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#3a7ca5"; e.currentTarget.style.color = "#c8d8e8"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#1a3456"; e.currentTarget.style.color = "#4a6d8c"; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.color = "#1D4ED8"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.color = "#6B7280"; }}
                 >
                   ✕
                 </button>
               </div>
 
               {/* Stat rows */}
-              <div style={{ borderTop: "1px solid #1a3456", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ borderTop: "1px solid #E8E7E4", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
                 {rows.map(({ label, value, color }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 11, color: "#4a6d8c" }}>{label}</span>
+                    <span style={{ fontSize: 11, color: "#6B7280" }}>{label}</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color, textAlign: "right" }}>{value}</span>
                   </div>
                 ))}
@@ -493,13 +475,14 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
                 }}
                 style={{
                   marginTop: 16,
-                  background: "none", border: "1px solid #2a4a6a",
-                  borderRadius: 6, color: "#5FA8D3", cursor: "pointer",
+                  background: "none", border: "1px solid #E8E7E4",
+                  borderRadius: 6, color: "#1D4ED8", cursor: "pointer",
                   padding: "7px 10px", fontSize: 11, fontWeight: 600,
                   whiteSpace: "nowrap", width: "100%",
+                  transition: "all 0.15s ease",
                 }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = "#5FA8D3"}
-                onMouseLeave={e => e.currentTarget.style.borderColor = "#2a4a6a"}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.background = "rgba(29,78,216,0.04)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.background = "none"; }}
               >
                 View full data →
               </button>
@@ -512,8 +495,8 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, marginBottom: 8, flexWrap: "wrap" }}>
         {compareGroup !== "all" && (
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid #1a2a3a", opacity: 0.55 }} />
-            <span style={{ fontSize: 10, color: "#4a6d8c" }}>Outside group</span>
+            <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid #E8E7E4" }} />
+            <span style={{ fontSize: 10, color: "#9CA3AF" }}>Outside group</span>
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -521,21 +504,21 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
             width: 120, height: 12, borderRadius: 4,
             background: `linear-gradient(to right, ${COLOR_STEPS[0]}, ${COLOR_STEPS[COLOR_STEPS.length - 1]})`,
           }} />
-          <span style={{ fontSize: 10, color: "#8aa4bc" }}>
+          <span style={{ fontSize: 10, color: "#6B7280" }}>
             {fmtLegend(domain[0])} — {fmtLegend(domain[1])}
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid #2a3a4a" }} />
-          <span style={{ fontSize: 10, color: "#8aa4bc" }}>Not in AFIR dataset</span>
+          <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid #E8E7E4" }} />
+          <span style={{ fontSize: 10, color: "#9CA3AF" }}>Not in AFIR dataset</span>
         </div>
         {mapMetric === "fb.pct" && (
-          <span style={{ fontSize: 10, color: "#8aa4bc", fontStyle: "italic" }}>
+          <span style={{ fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
             † Fund balance unavailable for Bladen &amp; Greene counties
           </span>
         )}
         {mapMetric === "tax.effective_rate" && (
-          <span style={{ fontSize: 10, color: "#8aa4bc", fontStyle: "italic" }}>
+          <span style={{ fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
             † Effective rates adjust for reappraisal cycle differences · Source: NC Dept. of Revenue 2025–26
           </span>
         )}

@@ -33,8 +33,6 @@ const SHOW_ALL_THRESHOLD = 9;
 const EDGE_ROWS          = 2;
 const NEIGHBOR_WINDOW    = 2;
 
-// standalone=true  → renders its own card (legacy / print use)
-// standalone=false → renders bare column content for use inside PeerRankingsPanel
 export default function PeerRankBar({ DATA, county, compare, metricKey, standalone = true }) {
   const primaryNull = metricKey === "fb.pct" && county.fb == null;
 
@@ -49,7 +47,6 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
 
   if (peers.length < 2 || primaryNull) return null;
 
-  // Sort descending: rank 1 = highest value
   const sorted = useMemo(
     () => [...validPeers].sort((a, b) => getMetricValue(b, metricKey) - getMetricValue(a, metricKey)),
     [validPeers, metricKey]
@@ -91,27 +88,25 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
 
   const content = (
     <>
-      {/* Column header: metric label + rank */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "baseline",
         marginBottom: 10, flexWrap: "wrap", gap: 4,
       }}>
-        <span style={{ fontSize: 11, color: "#6b8aad", textTransform: "uppercase", letterSpacing: 1 }}>
+        <span style={{ fontSize: 10, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: 1, fontWeight: 600 }}>
           {metricLabel(metricKey)}
           {standalone && ` — ${county.pg}`}
         </span>
-        <span style={{ fontSize: 12, fontWeight: 700, color: "#5FA8D3" }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#1D4ED8" }}>
           {rankLabel}
         </span>
       </div>
 
-      {/* Ranked list */}
       <div>
         {displayRows.map((row, i) => {
           if (row.ellipsis) {
             return (
               <div key={row.key} style={{
-                fontSize: 11, color: "#2a4a6b",
+                fontSize: 11, color: "#D1D5DB",
                 padding: "2px 0 2px 30px",
                 letterSpacing: 1,
               }}>
@@ -122,7 +117,6 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
 
           const isSelected = row.county.name === county.name;
           const isCompare  = sameGroup && compare && row.county.name === compare.name;
-          const accent     = isSelected ? "#5FA8D3" : isCompare ? "#EE9B00" : null;
           const val        = getMetricValue(row.county, metricKey);
 
           return (
@@ -134,16 +128,20 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               borderRadius: 5,
               marginBottom: 1,
               background: isSelected
-                ? "rgba(95,168,211,0.07)"
+                ? "rgba(29, 78, 216, 0.06)"
                 : isCompare
-                ? "rgba(238,155,0,0.07)"
+                ? "rgba(180, 83, 9, 0.06)"
                 : "transparent",
-              borderLeft: accent ? `2px solid ${accent}` : "2px solid transparent",
+              borderLeft: isSelected
+                ? "2px solid #1D4ED8"
+                : isCompare
+                ? "2px solid #B45309"
+                : "2px solid transparent",
             }}>
               <span style={{
                 width: 18,
                 fontSize: 10,
-                color: accent ?? "#2a4a6b",
+                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#D1D5DB",
                 textAlign: "right",
                 flexShrink: 0,
                 fontVariantNumeric: "tabular-nums",
@@ -153,7 +151,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               <span style={{
                 flex: 1,
                 fontSize: 12,
-                color: accent ?? "#6b8aad",
+                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#6B7280",
                 fontWeight: isSelected || isCompare ? 700 : 400,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -164,7 +162,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
               <span style={{
                 fontSize: 12,
                 fontWeight: isSelected || isCompare ? 700 : 400,
-                color: accent ?? "#4a6d8c",
+                color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#9CA3AF",
                 fontVariantNumeric: "tabular-nums",
                 flexShrink: 0,
               }}>
@@ -176,7 +174,7 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
       </div>
 
       {compare && !sameGroup && (
-        <div style={{ marginTop: 6, fontSize: 10, color: "#4a6d8c", fontStyle: "italic" }}>
+        <div style={{ marginTop: 6, fontSize: 10, color: "#9CA3AF", fontStyle: "italic" }}>
           {compare.name} ({compare.pg}) — different group, not ranked here.
         </div>
       )}
@@ -186,13 +184,17 @@ export default function PeerRankBar({ DATA, county, compare, metricKey, standalo
   if (!standalone) return content;
 
   return (
-    <div style={{
-      background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-      borderRadius: 12,
-      padding: "16px 24px",
-      border: "1px solid #1a3456",
-      marginBottom: 24,
-    }}>
+    <div
+      className="card-hover"
+      style={{
+        background: "#FFFFFF",
+        borderRadius: 12,
+        padding: "16px 20px",
+        border: "1px solid #E8E7E4",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        marginBottom: 24,
+      }}
+    >
       {content}
     </div>
   );

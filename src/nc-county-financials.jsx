@@ -138,15 +138,15 @@ function DropdownItem({ icon, label, sub, onClick }) {
       style={{
         display: "block", width: "100%", textAlign: "left",
         background: "none", border: "none", cursor: "pointer",
-        padding: "9px 16px", color: "#c8d8e8", fontSize: 13,
+        padding: "9px 16px", color: "#374151", fontSize: 13,
       }}
-      onMouseEnter={e => { e.currentTarget.style.background = "#132744"; }}
+      onMouseEnter={e => { e.currentTarget.style.background = "#F9FAFB"; }}
       onMouseLeave={e => { e.currentTarget.style.background = "none"; }}
     >
       <span style={{ marginRight: 10 }}>{icon}</span>
       <span style={{ fontWeight: 600 }}>{label}</span>
       {sub && (
-        <div style={{ fontSize: 10, color: "#4a6d8c", marginTop: 2, paddingLeft: 22 }}>{sub}</div>
+        <div style={{ fontSize: 10, color: "#9CA3AF", marginTop: 2, paddingLeft: 22 }}>{sub}</div>
       )}
     </button>
   );
@@ -157,16 +157,20 @@ function PeerRankingsPanel({ columns, group, isMobile }) {
   const cols = columns.filter(Boolean);
   if (cols.length === 0) return null;
   return (
-    <div style={{
-      background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-      borderRadius: 12,
-      padding: "16px 20px",
-      border: "1px solid #1a3456",
-      marginBottom: 24,
-    }}>
+    <div
+      className="card-hover"
+      style={{
+        background: "#FFFFFF",
+        borderRadius: 12,
+        padding: "16px 20px",
+        border: "1px solid #E8E7E4",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        marginBottom: 24,
+      }}
+    >
       <div style={{
         fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5,
-        color: "#6b8aad", marginBottom: 14, fontWeight: 600,
+        color: "#9CA3AF", marginBottom: 14, fontWeight: 600,
       }}>
         Peer Rankings{group ? ` · ${group}` : ""}
       </div>
@@ -179,8 +183,8 @@ function PeerRankingsPanel({ columns, group, isMobile }) {
           <Fragment key={i}>
             {i > 0 && (
               <div style={isMobile
-                ? { height: 1, background: "#1a3456", margin: "14px 0" }
-                : { width: 1, background: "#1a3456", margin: "0 18px", flexShrink: 0 }
+                ? { height: 1, background: "#E8E7E4", margin: "14px 0" }
+                : { width: 1, background: "#E8E7E4", margin: "0 18px", flexShrink: 0 }
               } />
             )}
             <div style={{ flex: 1, minWidth: 0 }}>{col}</div>
@@ -192,13 +196,16 @@ function PeerRankingsPanel({ columns, group, isMobile }) {
 }
 
 const ChartSkeleton = ({ isMobile }) => (
-  <div style={{
-    height: isMobile ? 240 : 340,
-    borderRadius: 12, border: "1px solid #1a3456",
-    background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#4a6d8c", fontSize: 13, marginBottom: 32,
-  }}>
+  <div
+    className="skeleton-pulse"
+    style={{
+      height: isMobile ? 240 : 340,
+      borderRadius: 12, border: "1px solid #E8E7E4",
+      background: "#F3F2F0",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      color: "#9CA3AF", fontSize: 13, marginBottom: 32,
+    }}
+  >
     Loading…
   </div>
 );
@@ -206,20 +213,17 @@ const ChartSkeleton = ({ isMobile }) => (
 function SourceBadge({ county, tone = "primary" }) {
   const label = getFallbackLabel(county);
   if (!label) return null;
-  const colors = tone === "compare"
-    ? { border: "#7a4f00", bg: "#24170a", text: "#EE9B00" }
-    : { border: "#3a7ca5", bg: "#0d1f3c", text: "#5FA8D3" };
   return (
     <span
       style={{
         fontSize: 11,
         fontWeight: 700,
         letterSpacing: 0.5,
-        padding: "5px 8px",
+        padding: "4px 10px",
         borderRadius: 999,
-        border: `1px solid ${colors.border}`,
-        background: colors.bg,
-        color: colors.text,
+        border: "1px solid #FDE68A",
+        background: "#FFFBEB",
+        color: "#92400E",
         whiteSpace: "nowrap",
       }}
     >
@@ -232,28 +236,29 @@ function NoDataNotice({ county, compare }) {
   return (
     <div
       style={{
-        background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
+        background: "#FFFFFF",
         borderRadius: 12,
-        border: "1px solid #1a3456",
+        border: "1px solid #E8E7E4",
         padding: 20,
         marginBottom: 24,
+        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
       }}
     >
-      <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: "#6b8aad", marginBottom: 10, fontWeight: 600 }}>
+      <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: "#9CA3AF", marginBottom: 10, fontWeight: 600 }}>
         Snapshot Availability
       </div>
-      <div style={{ background: "#1a2a3a", borderLeft: "3px solid #EE9B00", padding: 16, borderRadius: 4 }}>
-        <strong style={{ color: "#c8d8e8" }}>AFIR snapshot data is not available for {county.name} County.</strong>
-        <p style={{ color: "#8aa4bc", margin: "8px 0 0", fontSize: 13 }}>
+      <div style={{ background: "#FFFBEB", borderLeft: "3px solid #D97706", padding: 16, borderRadius: 4 }}>
+        <strong style={{ color: "#111827" }}>AFIR snapshot data is not available for {county.name} County.</strong>
+        <p style={{ color: "#6B7280", margin: "8px 0 0", fontSize: 13 }}>
           This county does not have a usable AFIR record in the local FY2016–FY2025 snapshot files, so the data view cannot show revenue, expenditure, or fund balance metrics.
         </p>
         {county.tax && (
-          <p style={{ color: "#8aa4bc", margin: "8px 0 0", fontSize: 13 }}>
+          <p style={{ color: "#6B7280", margin: "8px 0 0", fontSize: 13 }}>
             Current tax data is still available: {fmtTaxRate(county.tax.county_rate)} county rate and {fmtTaxRate(county.tax.effective_rate)} effective rate.
           </p>
         )}
         {compare && (
-          <p style={{ color: "#8aa4bc", margin: "8px 0 0", fontSize: 13 }}>
+          <p style={{ color: "#6B7280", margin: "8px 0 0", fontSize: 13 }}>
             Remove the compare county or pick a county with AFIR data to restore side-by-side charts.
           </p>
         )}
@@ -267,26 +272,35 @@ function NoDataNotice({ county, compare }) {
 function TabBar({ activeTab, setActiveTab, isMobile }) {
   const tabs = [["data", "Data View"], ["map", "Map View"], ["list", "List View"], ["trends", "Trends"]];
   return (
-    <div style={{ display: "flex", gap: 4 }}>
-      {tabs.map(([key, label]) => (
-        <button
-          key={key}
-          onClick={() => setActiveTab(key)}
-          aria-pressed={activeTab === key}
-          style={{
-            padding: isMobile ? "8px 12px" : "9px 20px",
-            borderRadius: 8,
-            border: "1px solid " + (activeTab === key ? "#3a7ca5" : "#1a3456"),
-            background: activeTab === key ? "#132744" : "transparent",
-            color: activeTab === key ? "#5FA8D3" : "#4a6d8c",
-            cursor: "pointer", fontSize: isMobile ? 11 : 12,
-            fontWeight: 600, textTransform: "uppercase", letterSpacing: 1,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {label}
-        </button>
-      ))}
+    <div role="tablist" style={{ display: "flex", gap: 0, borderBottom: "1px solid #E8E7E4" }}>
+      {tabs.map(([key, label]) => {
+        const isActive = activeTab === key;
+        return (
+          <button
+            key={key}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => setActiveTab(key)}
+            style={{
+              padding: isMobile ? "8px 12px" : "9px 20px",
+              border: "none",
+              borderBottom: isActive ? "2px solid #1D4ED8" : "2px solid transparent",
+              marginBottom: "-1px",
+              background: "transparent",
+              color: isActive ? "#1D4ED8" : "#6B7280",
+              cursor: "pointer",
+              fontSize: isMobile ? 12 : 13,
+              fontWeight: isActive ? 600 : 500,
+              whiteSpace: "nowrap",
+              transition: "color 0.15s ease, border-color 0.15s ease",
+            }}
+            onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = "#374151"; }}
+            onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = "#6B7280"; }}
+          >
+            {label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -486,6 +500,11 @@ export default function NCCountyFinancials() {
 
   // ── Narrative (interactive panel) ────────────────────────────────────────────
   const [narrativeOpen, setNarrativeOpen] = useState(false);
+
+  // Reset narrative accordion to closed on every county change
+  useEffect(() => {
+    setNarrativeOpen(false);
+  }, [selectedIdx]);
   const narrative = useMemo(
     () => countyHasData ? generateNarrative(county) : null,
     [selectedIdx]
@@ -496,14 +515,14 @@ export default function NCCountyFinancials() {
   const isDataView = activeTab === "data";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#060e1a", color: "#c8d8e8", fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#F7F6F4", color: "#111827", fontFamily: "'DM Sans', sans-serif" }}>
 
       {/* ── Header (contains title, tabs, actions) ── */}
       <div
         ref={headerRef}
         style={{
-          background: "linear-gradient(180deg, #0a1628 0%, #060e1a 100%)",
-          borderBottom: "1px solid #12253d",
+          background: "#FFFFFF",
+          borderBottom: "1px solid #E8E7E4",
           padding: isMobile ? `14px ${px} 0` : `28px ${px} 0`,
         }}
       >
@@ -512,15 +531,15 @@ export default function NCCountyFinancials() {
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: isMobile ? 14 : 20 }}>
             <div style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
-                <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#3a7ca5", fontWeight: 600 }}>North Carolina</span>
-                <span style={{ fontSize: 11, color: "#2a4a6b" }}>|</span>
-                <span style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "#2a4a6b" }}>FY2025 snapshot with county fallbacks</span>
+                <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#6B7280", fontWeight: 600 }}>North Carolina</span>
+                <span style={{ fontSize: 11, color: "#D1D5DB" }}>|</span>
+                <span style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "#9CA3AF" }}>FY2025 snapshot with county fallbacks</span>
               </div>
-              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 22 : 32, fontWeight: 900, color: "#e8f1f8", margin: 0, letterSpacing: -0.5 }}>
+              <h1 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 22 : 32, fontWeight: 700, color: "#111827", margin: 0, letterSpacing: -0.5 }}>
                 County Financial Explorer
               </h1>
               {!isMobile && (
-                <p style={{ fontSize: 13, color: "#4a6d8c", marginTop: 6, maxWidth: 600 }}>
+                <p style={{ fontSize: 13, color: "#6B7280", marginTop: 6, maxWidth: 600 }}>
                   {DATA.length} counties — FY2025 AFIR data where available, with earlier AFIR fallbacks for non-filers.
                 </p>
               )}
@@ -533,13 +552,15 @@ export default function NCCountyFinancials() {
               <div ref={shareDropRef} style={{ position: "relative" }}>
                 <button
                   onClick={() => setShareDropOpen(o => !o)}
+                  className="btn-interactive"
                   style={{
-                    background: "none", border: "1px solid #1a3456",
-                    borderRadius: 8, color: "#4a6d8c", cursor: "pointer",
+                    background: "none", border: "1px solid #E8E7E4",
+                    borderRadius: 8, color: "#6B7280", cursor: "pointer",
                     padding: "7px 12px", fontSize: 13, display: "flex", alignItems: "center", gap: 5,
+                    transition: "all 0.15s ease",
                   }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = "#3a7ca5"}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = "#1a3456"}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.color = "#1D4ED8"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.color = "#6B7280"; }}
                 >
                   {isMobile ? "Share" : "Share & Export"}
                   <span style={{ fontSize: 9, opacity: 0.7 }}>▾</span>
@@ -549,9 +570,10 @@ export default function NCCountyFinancials() {
                 {shareCopied && (
                   <div style={{
                     position: "absolute", top: "calc(100% + 6px)", right: 0,
-                    background: "#132744", border: "1px solid #2a3a4a",
+                    background: "#FFFFFF", border: "1px solid #E8E7E4",
                     borderRadius: 6, padding: "4px 10px", fontSize: 11,
-                    color: "#62B6CB", whiteSpace: "nowrap", zIndex: 30,
+                    color: "#1D4ED8", whiteSpace: "nowrap", zIndex: 30,
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
                   }}>
                     Link copied!
                   </div>
@@ -559,12 +581,12 @@ export default function NCCountyFinancials() {
 
                 {/* Dropdown menu */}
                 {shareDropOpen && (
-                  <div style={{
+                  <div className="fade-in" style={{
                     position: "absolute", top: "calc(100% + 4px)", right: 0,
-                    background: "#0d1f3c", border: "1px solid #1a3456",
+                    background: "#FFFFFF", border: "1px solid #E8E7E4",
                     borderRadius: 10, padding: "6px 0",
                     minWidth: 210, zIndex: 50,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                    boxShadow: "0 8px 28px rgba(0,0,0,0.12)",
                   }}>
                     {/* Copy link */}
                     <DropdownItem
@@ -596,13 +618,16 @@ export default function NCCountyFinancials() {
                 onClick={() => setModalOpen(true)}
                 aria-label="About this data"
                 style={{
-                  background: "none", border: "1px solid #1a3456",
-                  borderRadius: "50%", color: "#4a6d8c", cursor: "pointer",
-                  width: 34, height: 34, fontSize: 16, display: "flex",
+                  background: "none", border: "1px solid #E8E7E4",
+                  borderRadius: "50%", color: "#6B7280", cursor: "pointer",
+                  width: isMobile ? 44 : 34, height: isMobile ? 44 : 34,
+                  minWidth: isMobile ? 44 : undefined, minHeight: isMobile ? 44 : undefined,
+                  fontSize: 16, display: "flex",
                   alignItems: "center", justifyContent: "center",
+                  transition: "all 0.15s ease",
                 }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = "#3a7ca5"}
-                onMouseLeave={e => e.currentTarget.style.borderColor = "#1a3456"}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.color = "#1D4ED8"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.color = "#6B7280"; }}
               >
                 ⓘ
               </button>
@@ -625,13 +650,13 @@ export default function NCCountyFinancials() {
             flexWrap: isMobile ? "nowrap" : "wrap",
           }}>
             <div style={{ flex: isMobile ? "none" : "1 1 240px" }}>
-              <label style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5, color: "#4a6d8c", display: "block", marginBottom: 6 }}>
+              <label style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5, color: "#9CA3AF", display: "block", marginBottom: 6 }}>
                 Select County
               </label>
               <div style={{ position: "relative" }}>
                 <input
                   type="text"
-                  placeholder="Search counties…"
+                  placeholder="Search 100 counties…"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   onBlur={() => setTimeout(() => setSearchTerm(""), 150)}
@@ -640,9 +665,12 @@ export default function NCCountyFinancials() {
                   aria-expanded={searchTerm.length > 0 && filtered.length > 0}
                   style={{
                     width: "100%", boxSizing: "border-box", padding: "10px 14px",
-                    background: "#0d1f3c", border: "1px solid #1a3456",
-                    borderRadius: 8, color: "#e0e8f0", fontSize: 14, outline: "none",
+                    background: "#FFFFFF", border: "1px solid #E8E7E4",
+                    borderRadius: 8, color: "#111827", fontSize: 14, outline: "none",
+                    transition: "border-color 0.15s ease, box-shadow 0.15s ease",
                   }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(29,78,216,0.1)"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.boxShadow = "none"; }}
                 />
                 {searchTerm && filtered.length > 0 && (
                   <div
@@ -650,9 +678,10 @@ export default function NCCountyFinancials() {
                     aria-label="County suggestions"
                     style={{
                       position: "absolute", top: "100%", left: 0, right: 0,
-                      background: "#0d1f3c", border: "1px solid #1a3456",
+                      background: "#FFFFFF", border: "1px solid #E8E7E4",
                       borderTop: "none", borderRadius: "0 0 8px 8px",
                       maxHeight: 200, overflowY: "auto", zIndex: 10,
+                      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
                     }}
                   >
                     {filtered.map(d => (
@@ -661,11 +690,11 @@ export default function NCCountyFinancials() {
                         role="option"
                         aria-selected={d.idx === selectedIdx}
                         onMouseDown={e => { e.preventDefault(); selectCounty(d.idx); }}
-                        style={{ padding: "9px 14px", cursor: "pointer", fontSize: 13, borderBottom: "1px solid #0f2640", color: d.idx === selectedIdx ? "#5FA8D3" : "#c8d8e8" }}
-                        onMouseEnter={e => e.currentTarget.style.background = "#132744"}
+                        style={{ padding: "9px 14px", cursor: "pointer", fontSize: 13, borderBottom: "1px solid #F3F4F6", color: d.idx === selectedIdx ? "#1D4ED8" : "#374151" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "#F9FAFB"}
                         onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                       >
-                        {d.name} <span style={{ color: "#4a6d8c", fontSize: 11 }}>({fmtPop(d.pop)})</span>
+                        {d.name} <span style={{ color: "#9CA3AF", fontSize: 11 }}>({fmtPop(d.pop)})</span>
                       </div>
                     ))}
                   </div>
@@ -676,7 +705,7 @@ export default function NCCountyFinancials() {
             {/* Compare With — data view only */}
             {isDataView && (
               <div style={{ flex: isMobile ? "none" : "1 1 240px" }}>
-                <label style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5, color: "#4a6d8c", display: "block", marginBottom: 6 }}>
+                <label style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5, color: "#9CA3AF", display: "block", marginBottom: 6 }}>
                   Compare With
                 </label>
                 <select
@@ -685,9 +714,12 @@ export default function NCCountyFinancials() {
                   aria-label="Compare with another county"
                   style={{
                     width: "100%", padding: "10px 14px",
-                    background: "#0d1f3c", border: "1px solid #1a3456",
-                    borderRadius: 8, color: "#e0e8f0", fontSize: 14, outline: "none",
+                    background: "#FFFFFF", border: "1px solid #E8E7E4",
+                    borderRadius: 8, color: "#111827", fontSize: 14, outline: "none",
+                    transition: "border-color 0.15s ease, box-shadow 0.15s ease",
                   }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(29,78,216,0.1)"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.boxShadow = "none"; }}
                 >
                   <option value={-1}>None</option>
                   {compareOptions.map(({ name, i }) => (
@@ -705,16 +737,16 @@ export default function NCCountyFinancials() {
           <>
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 26 : 40, fontWeight: 900, color: "#e8f1f8", margin: 0 }}>
+                <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: isMobile ? 26 : 40, fontWeight: 400, color: "#111827", margin: 0, letterSpacing: "-0.5px" }}>
                   {county.name}
-                  <span style={{ fontSize: isMobile ? 13 : 16, fontWeight: 400, color: "#4a6d8c", marginLeft: 8, fontFamily: "'DM Sans', sans-serif" }}>County</span>
+                  <span style={{ fontSize: isMobile ? 13 : 16, fontWeight: 400, color: "#9CA3AF", marginLeft: 8, fontFamily: "'DM Sans', sans-serif" }}>County</span>
                 </h2>
-                {compare && <span style={{ fontSize: 14, color: "#EE9B00", fontWeight: 600 }}>vs {compare.name}</span>}
+                {compare && <span style={{ fontSize: 14, color: "#B45309", fontWeight: 600 }}>vs {compare.name}</span>}
                 <SourceBadge county={county} />
                 {compare && <SourceBadge county={compare} tone="compare" />}
               </div>
               {(county.pop != null || county.pg) && (
-                <div style={{ fontSize: 13, color: "#4a6d8c", marginTop: 5 }}>
+                <div style={{ fontSize: 13, color: "#6B7280", marginTop: 5 }}>
                   {[county.pop != null ? `Pop. ${fmtPop(county.pop)}` : null, county.pg].filter(Boolean).join(" · ")}
                 </div>
               )}
@@ -730,7 +762,7 @@ export default function NCCountyFinancials() {
                       label="Net Balance"
                       value={balance != null ? `${isSurplus ? "+" : "−"}${fmt(Math.abs(balance))}` : "—"}
                       sub={balance != null ? (isSurplus ? "Surplus" : "Deficit") : undefined}
-                      accent={isSurplus == null ? undefined : isSurplus ? "#62B6CB" : "#AE2012"}
+                      accent={isSurplus == null ? undefined : isSurplus ? "#059669" : "#DC2626"}
                     />
                   </div>
                   <div style={{ flex: "1 1 0", minWidth: isMobile ? "100%" : 320 }}>
@@ -764,14 +796,14 @@ export default function NCCountyFinancials() {
                     open={narrativeOpen}
                     onToggle={e => setNarrativeOpen(e.currentTarget.open)}
                     style={{
-                      background: "#0a1929",
-                      border: "1px solid #1a3456",
+                      background: "#F9FAFB",
+                      border: "1px solid #E8E7E4",
                       borderRadius: 6,
                       padding: "12px 16px",
                       marginBottom: 20,
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: 14,
-                      color: "#b0c4d8",
+                      color: "#6B7280",
                       lineHeight: 1.6,
                     }}
                   >
@@ -780,7 +812,7 @@ export default function NCCountyFinancials() {
                       fontSize: 11,
                       textTransform: "uppercase",
                       letterSpacing: 1.5,
-                      color: "#4a6d8c",
+                      color: "#9CA3AF",
                       fontWeight: 600,
                       userSelect: "none",
                       listStyle: "none",
@@ -813,8 +845,8 @@ export default function NCCountyFinancials() {
 
                 {/* ── Revenue section ── */}
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "#5FA8D3", whiteSpace: "nowrap" }}>Revenue</span>
-                  <div style={{ flex: 1, height: 1, background: "#1a3456" }} />
+                  <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "#1D4ED8", whiteSpace: "nowrap" }}>Revenue</span>
+                  <div style={{ flex: 1, height: 1, background: "#E8E7E4" }} />
                 </div>
                 <Suspense fallback={<ChartSkeleton isMobile={isMobile} />}>
                   <ChartPanel
@@ -825,8 +857,8 @@ export default function NCCountyFinancials() {
                     cats={REV_CATS}
                     countyName={county.name}
                     compareCounty={compareHasData ? compare : null}
-                    barColor="#5FA8D3"
-                    compareColor="#EE9B00"
+                    barColor="#1D4ED8"
+                    compareColor="#B45309"
                   />
                   <CategoryDeltaPanel
                     county={county}
@@ -856,8 +888,8 @@ export default function NCCountyFinancials() {
 
                 {/* ── Expenditures section ── */}
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, marginTop: 32 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "#EE9B00", whiteSpace: "nowrap" }}>Expenditures</span>
-                  <div style={{ flex: 1, height: 1, background: "#1a3456" }} />
+                  <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "#D97706", whiteSpace: "nowrap" }}>Expenditures</span>
+                  <div style={{ flex: 1, height: 1, background: "#E8E7E4" }} />
                 </div>
                 <Suspense fallback={<ChartSkeleton isMobile={isMobile} />}>
                   <ChartPanel
@@ -868,8 +900,8 @@ export default function NCCountyFinancials() {
                     cats={EXP_CATS}
                     countyName={county.name}
                     compareCounty={compareHasData ? compare : null}
-                    barColor="#EE9B00"
-                    compareColor="#5FA8D3"
+                    barColor="#D97706"
+                    compareColor="#1D4ED8"
                   />
                   <CategoryDeltaPanel
                     county={county}
@@ -916,28 +948,29 @@ export default function NCCountyFinancials() {
         {activeTab === "list" && (
           <div style={{ marginBottom: 40 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 18 : 22, color: "#e8f1f8", margin: 0, fontWeight: 700 }}>
+              <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 18 : 22, color: "#111827", margin: 0, fontWeight: 700 }}>
                 All Counties
               </h3>
               <button
                 onClick={() => downloadCSV(sortedData)}
                 style={{
                   padding: "7px 14px", borderRadius: 8,
-                  border: "1px solid #1a3456", background: "transparent",
-                  color: "#4a6d8c", cursor: "pointer", fontSize: 12,
+                  border: "1px solid #E8E7E4", background: "transparent",
+                  color: "#6B7280", cursor: "pointer", fontSize: 12,
                   fontWeight: 600, letterSpacing: 0.5,
+                  transition: "all 0.15s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#3a7ca5"; e.currentTarget.style.color = "#5FA8D3"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1a3456"; e.currentTarget.style.color = "#4a6d8c"; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#1D4ED8"; e.currentTarget.style.color = "#1D4ED8"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#E8E7E4"; e.currentTarget.style.color = "#6B7280"; }}
               >
                 ↓ CSV
               </button>
             </div>
-            <div style={{ background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)", borderRadius: 12, border: "1px solid #1a3456", overflow: "hidden" }}>
+            <div style={{ background: "#FFFFFF", borderRadius: 12, border: "1px solid #E8E7E4", overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)" }}>
               <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: isMobile ? 12 : 13 }}>
                   <thead>
-                    <tr style={{ borderBottom: "1px solid #1a3456" }}>
+                    <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E8E7E4" }}>
                       {TABLE_COLS.map(col => (
                         <th
                           key={col.key}
@@ -947,7 +980,7 @@ export default function NCCountyFinancials() {
                             padding: isMobile ? "10px 10px" : "12px 16px",
                             textAlign: "left", fontSize: 10,
                             textTransform: "uppercase", letterSpacing: 1,
-                            color: sortKey === col.key ? "#5FA8D3" : "#4a6d8c",
+                            color: sortKey === col.key ? "#1D4ED8" : "#6B7280",
                             fontWeight: 600, whiteSpace: "nowrap",
                             cursor: "pointer", userSelect: "none",
                           }}
@@ -959,10 +992,12 @@ export default function NCCountyFinancials() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedData.map(d => {
+                    {sortedData.map((d, rowIdx) => {
                       const idx        = NAME_TO_IDX[d.name];
                       const isSelected = d.name === county.name;
                       const isCompare  = compare && d.name === compare.name;
+                      const isEven     = rowIdx % 2 === 0;
+                      const baseBg     = isSelected ? "rgba(29,78,216,0.06)" : isCompare ? "rgba(180,83,9,0.06)" : isEven ? "#F9FAFB" : "#FFFFFF";
                       return (
                         <tr
                           key={d.name}
@@ -972,24 +1007,24 @@ export default function NCCountyFinancials() {
                           aria-label={`Select ${d.name} County`}
                           onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectCounty(idx); setActiveTab("data"); } }}
                           style={{
-                            borderBottom: "1px solid #0f2640",
-                            background: isSelected ? "#132744" : isCompare ? "#1a2810" : "transparent",
-                            cursor: "pointer", transition: "background 0.15s",
+                            borderBottom: "1px solid #F3F4F6",
+                            background: baseBg,
+                            cursor: "pointer", transition: "background 0.12s ease",
                           }}
-                          onMouseEnter={e => { if (!isSelected && !isCompare) e.currentTarget.style.background = "#0f1e35"; }}
-                          onMouseLeave={e => { e.currentTarget.style.background = isSelected ? "#132744" : isCompare ? "#1a2810" : "transparent"; }}
+                          onMouseEnter={e => { e.currentTarget.style.background = "#F3F2F0"; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = baseBg; }}
                         >
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", fontWeight: isSelected ? 700 : 400, color: isSelected ? "#5FA8D3" : isCompare ? "#EE9B00" : "#c8d8e8", whiteSpace: "nowrap" }}>{d.name}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#8aa4bc", whiteSpace: "nowrap" }}>{fmtPop(d.pop)}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#6b8aad", fontSize: 11, whiteSpace: "nowrap" }}>{d.pg}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", fontWeight: 600, color: "#e8f1f8", whiteSpace: "nowrap" }}>{fmtPC(d.pr["Total Revenue"])}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#c8d8e8", whiteSpace: "nowrap" }}>{fmtPC(d.pe["Total Expenditures"])}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#4a6d8c", whiteSpace: "nowrap" }}>{fmtPC(d.gr["Total Revenue"])}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#4a6d8c", whiteSpace: "nowrap" }}>{fmtPC(d.ge["Total Expenditures"])}</td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: d.fb?.pct != null ? (d.fb.pct < 0.08 ? "#AE2012" : d.fb.pct <= 0.25 ? "#EE9B00" : "#62B6CB") : "#2a4a6b", whiteSpace: "nowrap" }}>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", fontWeight: isSelected ? 700 : 400, color: isSelected ? "#1D4ED8" : isCompare ? "#B45309" : "#111827", whiteSpace: "nowrap" }}>{d.name}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#6B7280", whiteSpace: "nowrap" }}>{fmtPop(d.pop)}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#9CA3AF", fontSize: 11, whiteSpace: "nowrap" }}>{d.pg}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", fontWeight: 600, color: "#111827", whiteSpace: "nowrap" }}>{fmtPC(d.pr["Total Revenue"])}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#374151", whiteSpace: "nowrap" }}>{fmtPC(d.pe["Total Expenditures"])}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#9CA3AF", whiteSpace: "nowrap" }}>{fmtPC(d.gr["Total Revenue"])}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#9CA3AF", whiteSpace: "nowrap" }}>{fmtPC(d.ge["Total Expenditures"])}</td>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: d.fb?.pct != null ? (d.fb.pct < 0.08 ? "#DC2626" : d.fb.pct <= 0.25 ? "#D97706" : "#059669") : "#D1D5DB", whiteSpace: "nowrap" }}>
                             {fmtFbPct(d.fb?.pct)}
                           </td>
-                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#c8d8e8", whiteSpace: "nowrap" }}>
+                          <td style={{ padding: isMobile ? "8px 10px" : "10px 16px", color: "#374151", whiteSpace: "nowrap" }}>
                             {fmtTaxRateShort(d.tax?.county_rate)}
                           </td>
                         </tr>
@@ -1000,7 +1035,7 @@ export default function NCCountyFinancials() {
               </div>
             </div>
             {isMobile && (
-              <p style={{ fontSize: 11, color: "#2a4a6b", marginTop: 8, textAlign: "center" }}>
+              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 8, textAlign: "center" }}>
                 ← Scroll horizontally to see all columns
               </p>
             )}
@@ -1015,7 +1050,7 @@ export default function NCCountyFinancials() {
         )}
 
         {/* Footer */}
-        <div style={{ textAlign: "center", padding: "20px 0 32px", borderTop: "1px solid #12253d", fontSize: 11, color: "#2a4a6b", marginTop: 16 }}>
+        <div style={{ textAlign: "center", padding: "20px 0 32px", borderTop: "1px solid #E8E7E4", fontSize: 11, color: "#9CA3AF", marginTop: 16 }}>
           Source: NC Department of State Treasurer — Annual Financial Information Reports (AFIR) · Snapshot uses FY2025 where available, then earlier AFIR fallback years by county.
         </div>
 

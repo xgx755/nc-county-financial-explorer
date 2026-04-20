@@ -6,15 +6,11 @@ import {
 
 // ─── Rank calculation ─────────────────────────────────────────────────────────
 
-// Compute fund balance rank for the county within its peer group, per year.
-// Returns array sorted ascending by year (matching input).
-// Rank is year-specific: for each year, looks up all peers that filed that year.
 function computeRankTrajectory(history, countyName) {
   if (!history || !countyName) return [];
   const countyHistory = history[countyName];
   if (!countyHistory || countyHistory.length === 0) return [];
 
-  // Array is sorted ascending by year. Use last entry's pg for stable peer grouping.
   const pg = countyHistory[countyHistory.length - 1]?.pg;
   if (!pg) return [];
 
@@ -23,16 +19,13 @@ function computeRankTrajectory(history, countyName) {
       return { year: entry.year, rank: null, peerCount: null, fb_pct: null };
     }
 
-    // All counties in the same pg with non-null fb_pct for this year
     const peers = Object.values(history)
       .flatMap(arr => arr.filter(y => y.year === entry.year && y.pg === pg && y.fb_pct != null));
 
     if (peers.length === 0) {
-      // Edge case: county is the only one in its pg this year
       return { year: entry.year, rank: 1, peerCount: 1, fb_pct: entry.fb_pct };
     }
 
-    // Sort descending, assign min-rank on tie (tied counties get the same rank)
     const sorted = [...peers].sort((a, b) => b.fb_pct - a.fb_pct);
     let rank = 1;
     for (let i = 0; i < sorted.length; i++) {
@@ -44,7 +37,6 @@ function computeRankTrajectory(history, countyName) {
   });
 }
 
-// Compute peer group average fb% per year
 function computePeerAvgFbPct(history, pg, years) {
   if (!history || !pg) return [];
   return years.map(year => {
@@ -55,7 +47,6 @@ function computePeerAvgFbPct(history, pg, years) {
   });
 }
 
-// Compute peer group average for a numeric metric key per year
 function computePeerAvgMetric(history, pg, years, metricKey) {
   if (!history || !pg) return [];
   return years.map(year => {
@@ -77,23 +68,29 @@ function SectionHeader({ title, sub }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <h3 style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: 17, fontWeight: 700, color: "#e8f1f8", margin: 0,
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 17, fontWeight: 700, color: "#111827", margin: 0, letterSpacing: "-0.2px",
       }}>
         {title}
       </h3>
-      {sub && <div style={{ fontSize: 12, color: "#4a6d8c", marginTop: 4 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 4 }}>{sub}</div>}
     </div>
   );
 }
 
 function ChartCard({ children }) {
   return (
-    <div style={{
-      background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-      borderRadius: 12, border: "1px solid #1a3456",
-      padding: "20px 20px 14px", marginBottom: 28,
-    }}>
+    <div
+      className="card-hover"
+      style={{
+        background: "#FFFFFF",
+        borderRadius: 12,
+        border: "1px solid #E8E7E4",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        padding: "20px 20px 14px",
+        marginBottom: 28,
+      }}
+    >
       {children}
     </div>
   );
@@ -103,14 +100,14 @@ function EmptyState({ message }) {
   return (
     <div style={{
       height: 160, display: "flex", alignItems: "center",
-      justifyContent: "center", color: "#4a6d8c", fontSize: 13,
+      justifyContent: "center", color: "#9CA3AF", fontSize: 13,
     }}>
       {message}
     </div>
   );
 }
 
-const AXIS_STYLE = { fill: "#4a6d8c", fontSize: 11 };
+const AXIS_STYLE = { fill: "#9CA3AF", fontSize: 11 };
 
 // ─── Custom tooltips ──────────────────────────────────────────────────────────
 
@@ -120,13 +117,14 @@ function RankTooltip({ active, payload }) {
   if (!d || d.rank == null) return null;
   return (
     <div style={{
-      background: "#0d1f3c", border: "1px solid #1a3456",
+      background: "#FFFFFF", border: "1px solid #E8E7E4",
       borderRadius: 6, padding: "8px 12px", fontSize: 12,
+      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
     }}>
-      <div style={{ color: "#5FA8D3", fontWeight: 700 }}>FY{d.year}</div>
-      <div style={{ color: "#c8d8e8" }}>Rank #{d.rank} of {d.peerCount}</div>
+      <div style={{ color: "#1D4ED8", fontWeight: 700 }}>FY{d.year}</div>
+      <div style={{ color: "#111827" }}>Rank #{d.rank} of {d.peerCount}</div>
       {d.fb_pct != null && (
-        <div style={{ color: "#8aa4bc", fontSize: 11 }}>Fund Balance: {fmtFbPct(d.fb_pct)}</div>
+        <div style={{ color: "#6B7280", fontSize: 11 }}>Fund Balance: {fmtFbPct(d.fb_pct)}</div>
       )}
     </div>
   );
@@ -136,10 +134,11 @@ function MetricTooltip({ active, payload, label, isPercent, isCurrency }) {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: "#0d1f3c", border: "1px solid #1a3456",
+      background: "#FFFFFF", border: "1px solid #E8E7E4",
       borderRadius: 6, padding: "8px 12px", fontSize: 12,
+      boxShadow: "0 4px 14px rgba(0,0,0,0.10)",
     }}>
-      <div style={{ color: "#5FA8D3", fontWeight: 700 }}>FY{label}</div>
+      <div style={{ color: "#1D4ED8", fontWeight: 700 }}>FY{label}</div>
       {payload.map(p => p.value != null && (
         <div key={p.name} style={{ color: p.color }}>
           {p.name}: {isPercent
@@ -176,13 +175,11 @@ export default function TrendsPanel({ county, history, isMobile }) {
 
   const years = filteredHistory.map(e => e.year);
 
-  // Full rank trajectory (uses all years, not filtered — rank is year-specific)
   const fullRankTrajectory = useMemo(
     () => computeRankTrajectory(history, county.name),
     [history, county.name]
   );
 
-  // Filtered rank trajectory (for display)
   const rankTrajectory = useMemo(
     () => fullRankTrajectory.filter(r => r.year >= startYear && r.year <= endYear),
     [fullRankTrajectory, startYear, endYear]
@@ -194,7 +191,7 @@ export default function TrendsPanel({ county, history, isMobile }) {
 
   if (countyHistory.length === 0) {
     return (
-      <div style={{ padding: "40px 0", textAlign: "center", color: "#4a6d8c" }}>
+      <div style={{ padding: "40px 0", textAlign: "center", color: "#9CA3AF" }}>
         Trend data not available for {county.name}.
       </div>
     );
@@ -202,13 +199,12 @@ export default function TrendsPanel({ county, history, isMobile }) {
 
   if (filteredHistory.length === 0) {
     return (
-      <div style={{ padding: "40px 0", textAlign: "center", color: "#4a6d8c" }}>
+      <div style={{ padding: "40px 0", textAlign: "center", color: "#9CA3AF" }}>
         No data for {county.name} in this range.
       </div>
     );
   }
 
-  // Chart data
   const validRanks  = rankTrajectory.filter(r => r.rank !== null);
   const maxRankSeen = validRanks.length > 0 ? Math.max(...validRanks.map(r => r.peerCount)) : 14;
   const currentEntry = validRanks.at(-1);
@@ -252,9 +248,10 @@ export default function TrendsPanel({ county, history, isMobile }) {
             style={{
               padding: "7px 14px", borderRadius: 8, fontSize: 12,
               fontWeight: 600, cursor: "pointer", letterSpacing: 0.3,
-              border: "1px solid " + (rangeIdx === i ? "#3a7ca5" : "#1a3456"),
-              background: rangeIdx === i ? "#132744" : "transparent",
-              color: rangeIdx === i ? "#5FA8D3" : "#4a6d8c",
+              border: "1px solid " + (rangeIdx === i ? "#1D4ED8" : "#E8E7E4"),
+              background: rangeIdx === i ? "rgba(29,78,216,0.06)" : "transparent",
+              color: rangeIdx === i ? "#1D4ED8" : "#6B7280",
+              transition: "all 0.15s ease",
             }}
           >
             {r.label}
@@ -277,30 +274,30 @@ export default function TrendsPanel({ county, history, isMobile }) {
         ) : (
           <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
             <LineChart data={rankChartData} margin={{ top: 8, right: 16, bottom: 4, left: -4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1a3456" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
               <XAxis
                 dataKey="year" tickFormatter={fmtYear}
-                tick={AXIS_STYLE} axisLine={false} tickLine={false}
+                tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
               />
               <YAxis
                 reversed
                 domain={[maxRankSeen + 1, 1]}
-                tick={AXIS_STYLE} axisLine={false} tickLine={false}
+                tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
                 tickFormatter={v => `#${v}`}
                 allowDecimals={false} width={34}
               />
               {topQuartile && (
                 <ReferenceArea
                   y1={1} y2={topQuartile}
-                  fill="#1a3456" fillOpacity={0.5}
-                  label={{ value: "Top quartile", position: "insideTopRight", fill: "#3a7ca5", fontSize: 10 }}
+                  fill="rgba(29,78,216,0.06)" fillOpacity={1}
+                  label={{ value: "Top quartile", position: "insideTopRight", fill: "#1D4ED8", fontSize: 10 }}
                 />
               )}
               <Tooltip content={<RankTooltip />} />
               <Line
                 type="monotone" dataKey="rank"
-                stroke="#5FA8D3" strokeWidth={2.5}
-                dot={{ fill: "#5FA8D3", r: 4 }}
+                stroke="#1D4ED8" strokeWidth={2.5}
+                dot={{ fill: "#1D4ED8", r: 4 }}
                 activeDot={{ r: 6 }}
                 connectNulls={false}
                 isAnimationActive={false}
@@ -308,7 +305,7 @@ export default function TrendsPanel({ county, history, isMobile }) {
             </LineChart>
           </ResponsiveContainer>
         )}
-        <div style={{ fontSize: 11, color: "#2a4a6b", marginTop: 6 }}>
+        <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 6 }}>
           Ranked among {pg} counties that filed AFIR each year. Lower rank = stronger fund balance.
         </div>
       </ChartCard>
@@ -321,21 +318,21 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={fbChartData} margin={{ top: 8, right: 16, bottom: 4, left: -4 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1a3456" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={false} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} width={40} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `${v}%`} width={40} />
             <ReferenceLine
-              y={8} stroke="#AE2012" strokeDasharray="4 2"
-              label={{ value: "LGC 8%", position: "insideBottomLeft", fill: "#AE2012", fontSize: 10 }}
+              y={8} stroke="#DC2626" strokeDasharray="4 2"
+              label={{ value: "LGC 8%", position: "insideBottomLeft", fill: "#DC2626", fontSize: 10 }}
             />
             <Tooltip content={<MetricTooltip isPercent />} />
-            <Line type="monotone" dataKey={county.name} stroke="#5FA8D3" strokeWidth={2.5} dot={{ fill: "#5FA8D3", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#4a6d8c" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#1D4ED8" strokeWidth={2.5} dot={{ fill: "#1D4ED8", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#5FA8D3" }}>— {county.name}</span>
-          <span style={{ color: "#4a6d8c" }}>- - Peer group avg</span>
+          <span style={{ color: "#1D4ED8" }}>— {county.name}</span>
+          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
 
@@ -347,17 +344,17 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={revChartData} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1a3456" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={false} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
             <Tooltip content={<MetricTooltip isCurrency />} />
-            <Line type="monotone" dataKey={county.name} stroke="#5FA8D3" strokeWidth={2.5} dot={{ fill: "#5FA8D3", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#4a6d8c" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#1D4ED8" strokeWidth={2.5} dot={{ fill: "#1D4ED8", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#5FA8D3" }}>— {county.name}</span>
-          <span style={{ color: "#4a6d8c" }}>- - Peer group avg</span>
+          <span style={{ color: "#1D4ED8" }}>— {county.name}</span>
+          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
 
@@ -369,17 +366,17 @@ export default function TrendsPanel({ county, history, isMobile }) {
         />
         <ResponsiveContainer width="100%" height={chartHeight}>
           <LineChart data={expChartData} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1a3456" vertical={false} />
-            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={false} tickLine={false} />
-            <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+            <XAxis dataKey="year" tickFormatter={fmtYear} tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} />
+            <YAxis tick={AXIS_STYLE} axisLine={{ stroke: "#E8E7E4" }} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(1)}K`} width={46} />
             <Tooltip content={<MetricTooltip isCurrency />} />
-            <Line type="monotone" dataKey={county.name} stroke="#EE9B00" strokeWidth={2.5} dot={{ fill: "#EE9B00", r: 3 }} connectNulls={false} isAnimationActive={false} />
-            <Line type="monotone" dataKey="Peer group avg" stroke="#4a6d8c" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey={county.name} stroke="#D97706" strokeWidth={2.5} dot={{ fill: "#D97706", r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="monotone" dataKey="Peer group avg" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="4 3" dot={false} connectNulls={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 11 }}>
-          <span style={{ color: "#EE9B00" }}>— {county.name}</span>
-          <span style={{ color: "#4a6d8c" }}>- - Peer group avg</span>
+          <span style={{ color: "#D97706" }}>— {county.name}</span>
+          <span style={{ color: "#9CA3AF" }}>- - Peer group avg</span>
         </div>
       </ChartCard>
     </div>

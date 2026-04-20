@@ -7,8 +7,6 @@ function fmtFbPct(val) {
   return (val * 100).toFixed(1) + "%";
 }
 
-// Map a value 0–1 across a domain of 0–maxVal for track positioning
-// We show up to 1.5× the max of (pct, grp_pct) for comfortable padding
 function trackDomain(county, compare) {
   const vals = [
     LGC_FBA_MIN,
@@ -23,151 +21,132 @@ function trackDomain(county, compare) {
 }
 
 function fillColor(pct) {
-  if (pct < LGC_FBA_MIN) return "#AE2012";
-  if (pct <= 0.25) return "#EE9B00";
-  return "#62B6CB";
+  if (pct < LGC_FBA_MIN) return "#DC2626";
+  if (pct <= 0.25) return "#D97706";
+  return "#059669";
 }
 
-// Single gauge track for one county
+function statusLabel(pct) {
+  if (pct < LGC_FBA_MIN) return "Below minimum";
+  if (pct <= 0.25) return "At risk";
+  return "Healthy";
+}
+
 function GaugeTrack({ fb, countyName, domain, thin = false }) {
   if (!fb || fb.pct == null) return null;
 
   const { pct, grp_pct, state_pct } = fb;
   const toX = (v) => `${Math.min((v / domain) * 100, 100)}%`;
 
-  const trackH = thin ? 8 : 12;
-  const markerR = thin ? 5 : 7;
+  const trackH  = thin ? 7 : 10;
+  const color   = fillColor(pct);
 
   return (
-    <div style={{ position: "relative", marginBottom: thin ? 6 : 18 }}>
-      {/* State avg label — small, above track right side */}
+    <div style={{ position: "relative", marginBottom: thin ? 6 : 20 }}>
+      {/* State avg label */}
       {!thin && state_pct != null && (
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            top: -16,
-            fontSize: 10,
-            color: "#4a6d8c",
-          }}
-        >
+        <div style={{
+          position: "absolute", right: 0, top: -16,
+          fontSize: 10, color: "#9CA3AF",
+        }}>
           State avg: {fmtFbPct(state_pct)}
         </div>
       )}
 
-      {/* County % label above fill segment */}
+      {/* County % label above fill */}
       {!thin && (
-        <div
-          style={{
-            position: "absolute",
-            left: toX(pct),
-            top: -16,
-            transform: "translateX(-50%)",
-            fontSize: 11,
-            fontWeight: 700,
-            color: fillColor(pct),
-            whiteSpace: "nowrap",
-          }}
-        >
+        <div style={{
+          position: "absolute",
+          left: toX(pct),
+          top: -16,
+          transform: "translateX(-50%)",
+          fontSize: 11,
+          fontWeight: 700,
+          color: color,
+          whiteSpace: "nowrap",
+        }}>
           {fmtFbPct(pct)}
         </div>
       )}
 
       {/* Track */}
-      <div
-        style={{
-          position: "relative",
-          height: trackH,
-          background: "#1a2a3a",
+      <div style={{
+        position: "relative",
+        height: trackH,
+        background: "#EEF0F2",
+        borderRadius: 6,
+        overflow: "visible",
+      }}>
+        {/* Fill */}
+        <div style={{
+          position: "absolute",
+          left: 0, top: 0,
+          height: "100%",
+          width: toX(pct),
+          background: color,
           borderRadius: 6,
-          overflow: "visible",
-        }}
-      >
-        {/* County fill */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            height: "100%",
-            width: toX(pct),
-            background: fillColor(pct),
-            borderRadius: 6,
-            transition: "width 0.4s ease",
-          }}
-        />
+          transition: "width 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          opacity: 0.85,
+        }} />
 
         {/* LGC min tick */}
-        <div
-          style={{
-            position: "absolute",
-            left: toX(LGC_FBA_MIN),
-            top: -3,
-            width: 2,
-            height: trackH + 6,
-            background: "#ffffff88",
-            borderRadius: 1,
-          }}
-        />
+        <div style={{
+          position: "absolute",
+          left: toX(LGC_FBA_MIN),
+          top: -3,
+          width: 2,
+          height: trackH + 6,
+          background: "rgba(0,0,0,0.2)",
+          borderRadius: 1,
+        }} />
 
         {/* Group avg tick */}
         {grp_pct != null && (
-          <div
-            style={{
-              position: "absolute",
-              left: toX(grp_pct),
-              top: -3,
-              width: 2,
-              height: trackH + 6,
-              background: "#EE9B00",
-              borderRadius: 1,
-            }}
-          />
+          <div style={{
+            position: "absolute",
+            left: toX(grp_pct),
+            top: -3,
+            width: 2,
+            height: trackH + 6,
+            background: "#D97706",
+            borderRadius: 1,
+          }} />
         )}
       </div>
 
       {/* Labels below track */}
-      <div
-        style={{
-          position: "relative",
-          height: 20,
-          marginTop: 4,
-          fontSize: 10,
-          color: "#8aa4bc",
-        }}
-      >
-        {/* LGC min label */}
-        <span
-          style={{
-            position: "absolute",
-            left: toX(LGC_FBA_MIN),
-            transform: "translateX(-50%)",
-            whiteSpace: "nowrap",
-            color: "#aabbcc",
-          }}
-        >
+      <div style={{
+        position: "relative",
+        height: 20,
+        marginTop: 4,
+        fontSize: 10,
+        color: "#9CA3AF",
+      }}>
+        <span style={{
+          position: "absolute",
+          left: toX(LGC_FBA_MIN),
+          transform: "translateX(-50%)",
+          whiteSpace: "nowrap",
+          color: "#6B7280",
+        }}>
           LGC Min 8%
         </span>
 
-        {/* Group avg label */}
         {grp_pct != null && (
-          <span
-            style={{
-              position: "absolute",
-              left: toX(grp_pct),
-              transform: "translateX(-50%)",
-              whiteSpace: "nowrap",
-              color: "#EE9B00",
-            }}
-          >
+          <span style={{
+            position: "absolute",
+            left: toX(grp_pct),
+            transform: "translateX(-50%)",
+            whiteSpace: "nowrap",
+            color: "#D97706",
+          }}>
             Group Avg {fmtFbPct(grp_pct)}
           </span>
         )}
       </div>
 
-      {/* Thin track pct label */}
       {thin && (
-        <div style={{ fontSize: 11, color: fillColor(pct), marginTop: 4 }}>
+        <div style={{ fontSize: 11, color: color, marginTop: 4 }}>
           {countyName}: {fmtFbPct(pct)}
         </div>
       )}
@@ -176,47 +155,53 @@ function GaugeTrack({ fb, countyName, domain, thin = false }) {
 }
 
 export default function FundBalanceGauge({ county, compare }) {
-  const hasFb = county.fb && county.fb.pct != null;
+  const hasFb  = county.fb && county.fb.pct != null;
   const domain = trackDomain(county, compare);
 
   return (
     <div
+      className="card-hover"
       style={{
-        background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
+        background: "#FFFFFF",
         borderRadius: 12,
-        padding: "20px 24px",
-        border: "1px solid #1a3456",
+        padding: "22px 24px",
+        border: "1px solid #E8E7E4",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
+        height: "100%",
+        boxSizing: "border-box",
       }}
     >
-      <div
-        style={{
-          fontSize: 11,
-          textTransform: "uppercase",
-          letterSpacing: 1.5,
-          color: "#6b8aad",
-          marginBottom: 6,
-          fontWeight: 600,
-        }}
-      >
+      <div style={{
+        fontSize: 10,
+        textTransform: "uppercase",
+        letterSpacing: 1.5,
+        color: "#9CA3AF",
+        marginBottom: 8,
+        fontWeight: 600,
+      }}>
         Fund Balance
       </div>
 
       {hasFb && (
         <div style={{
-          fontSize: 26,
+          fontSize: 28,
           fontWeight: 700,
           color: fillColor(county.fb.pct),
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'DM Sans', sans-serif",
           lineHeight: 1.1,
-          marginBottom: 16,
+          marginBottom: 18,
           display: "flex",
           alignItems: "baseline",
           gap: 10,
           flexWrap: "wrap",
+          letterSpacing: "-0.5px",
         }}>
           {fmtFbPct(county.fb.pct)}
+          <span style={{ fontSize: 12, fontWeight: 400, color: fillColor(county.fb.pct), fontFamily: "'DM Sans', sans-serif" }}>
+            {statusLabel(county.fb.pct)}
+          </span>
           {county.fb.grp_pct != null && (
-            <span style={{ fontSize: 12, fontWeight: 400, color: "#5a7d9a", fontFamily: "'DM Sans', sans-serif" }}>
+            <span style={{ fontSize: 12, fontWeight: 400, color: "#9CA3AF" }}>
               Group avg {fmtFbPct(county.fb.grp_pct)}
             </span>
           )}
@@ -224,23 +209,20 @@ export default function FundBalanceGauge({ county, compare }) {
       )}
 
       {!hasFb ? (
-        /* Null state */
-        <div
-          style={{
-            background: "#1a2a3a",
-            borderLeft: "3px solid #EE9B00",
-            padding: 16,
-            borderRadius: 4,
-          }}
-        >
-          <span style={{ color: "#EE9B00", marginRight: 8 }}>⚠</span>
-          <strong style={{ color: "#c8d8e8" }}>
+        <div style={{
+          background: "#FFFBEB",
+          border: "1px solid #FDE68A",
+          borderLeft: "3px solid #D97706",
+          padding: "12px 14px",
+          borderRadius: 6,
+        }}>
+          <span style={{ color: "#D97706", marginRight: 8 }}>⚠</span>
+          <strong style={{ color: "#92400E", fontSize: 13 }}>
             Fund balance data not available
           </strong>
-          <p style={{ color: "#8aa4bc", margin: "6px 0 0", fontSize: 13 }}>
+          <p style={{ color: "#92400E", margin: "6px 0 0", fontSize: 12, opacity: 0.8 }}>
             {county.name} County did not file an audit that was included in
-            this AFIR dataset. Fund balance figures cannot be reported for this
-            county.
+            this AFIR dataset.
           </p>
         </div>
       ) : (
@@ -253,16 +235,15 @@ export default function FundBalanceGauge({ county, compare }) {
           />
 
           {compare && compare.fb && compare.fb.pct != null && (
-            <div style={{ marginTop: 8 }}>
-              <div
-                style={{
-                  fontSize: 10,
-                  color: "#EE9B00",
-                  marginBottom: 6,
-                  textTransform: "uppercase",
-                  letterSpacing: 1,
-                }}
-              >
+            <div style={{ marginTop: 10 }}>
+              <div style={{
+                fontSize: 10,
+                color: "#B45309",
+                marginBottom: 6,
+                textTransform: "uppercase",
+                letterSpacing: 1,
+                fontWeight: 600,
+              }}>
                 {compare.name} (compare)
               </div>
               <GaugeTrack
@@ -275,18 +256,17 @@ export default function FundBalanceGauge({ county, compare }) {
           )}
 
           {compare && (!compare.fb || compare.fb.pct == null) && (
-            <div
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                color: "#8aa4bc",
-                background: "#1a2a3a",
-                borderLeft: "3px solid #EE9B00",
-                padding: "8px 12px",
-                borderRadius: 4,
-              }}
-            >
-              <span style={{ color: "#EE9B00", marginRight: 6 }}>⚠</span>
+            <div style={{
+              marginTop: 10,
+              fontSize: 12,
+              color: "#92400E",
+              background: "#FFFBEB",
+              border: "1px solid #FDE68A",
+              borderLeft: "3px solid #D97706",
+              padding: "8px 12px",
+              borderRadius: 4,
+            }}>
+              <span style={{ color: "#D97706", marginRight: 6 }}>⚠</span>
               Fund balance data not available for {compare.name} County.
             </div>
           )}

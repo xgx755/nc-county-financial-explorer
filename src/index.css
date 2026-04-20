@@ -1,3 +1,4 @@
+/* ─── Reset ─────────────────────────────────────────────────────────────────── */
 body,
 html,
 #root {
@@ -7,7 +8,106 @@ html,
   width: 100%;
 }
 
-/* Map sidebar slide-in animations */
+/* ─── Design tokens ──────────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg:         #F7F6F4;
+  --surface:    #FFFFFF;
+  --surface-2:  #F3F2F0;
+
+  /* Borders */
+  --border:       #E8E7E4;
+  --border-muted: #EEECEA;
+
+  /* Text */
+  --text:        #111827;
+  --text-2:      #6B7280;
+  --text-muted:  #9CA3AF;
+  --text-dim:    #D1D5DB;
+
+  /* Accents */
+  --accent:       #1D4ED8;
+  --accent-bg:    rgba(29, 78, 216, 0.06);
+  --compare:      #B45309;
+  --compare-bg:   rgba(180, 83, 9, 0.06);
+  --positive:     #059669;
+  --negative:     #DC2626;
+  --warning:      #D97706;
+
+  /* Elevation */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 14px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-lg:   0 8px 28px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.07);
+}
+
+/* ─── Global base ─────────────────────────────────────────────────────────────── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Micro-interaction utilities ─────────────────────────────────────────────── */
+
+/* Cards lift on hover */
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.18s ease;
+}
+.card-hover:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+}
+
+/* Buttons feel responsive */
+.btn-interactive {
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-interactive:active {
+  transform: scale(0.97);
+}
+
+/* Table rows */
+.table-row {
+  transition: background 0.12s ease;
+}
+
+/* Input focus ring */
+input, select {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1) !important;
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn 0.25s ease both;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.9; }
+}
+.skeleton-pulse {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* ─── Map sidebar animations ──────────────────────────────────────────────────── */
 @keyframes map-sidebar-slide-right {
   from { transform: translateX(105%); opacity: 0; }
   to   { transform: translateX(0);   opacity: 1; }
@@ -22,3 +122,9 @@ html,
 .map-sidebar-left {
   animation: map-sidebar-slide-left 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
+
+/* ─── Scrollbar styling ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 6px; height: 6px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: #D1D5DB; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }

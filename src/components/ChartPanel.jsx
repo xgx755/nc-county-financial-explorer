@@ -7,19 +7,19 @@ import {
 // ─── Palette (only needed by chart rendering) ─────────────────────────────────
 
 const PALETTE = {
-  "Property Taxes":     "#1B4965",
-  "Other Taxes":        "#5FA8D3",
-  "Sales Tax":          "#62B6CB",
-  "Sales & Services":   "#BEE9E8",
-  "Intergovernmental":  "#CAE9FF",
-  "Debt Proceeds":      "#95B8D1",
-  "Other Misc":         "#D6E2E9",
-  "Education":          "#9B2226",
-  "Debt Service":       "#AE2012",
-  "Human Services":     "#BB3E03",
-  "General Government": "#CA6702",
-  "Public Safety":      "#EE9B00",
-  "Other":              "#E9D8A6",
+  "Property Taxes":     "#1E40AF",
+  "Other Taxes":        "#2563EB",
+  "Sales Tax":          "#0284C7",
+  "Sales & Services":   "#0891B2",
+  "Intergovernmental":  "#0D9488",
+  "Debt Proceeds":      "#64748B",
+  "Other Misc":         "#94A3B8",
+  "Education":          "#7F1D1D",
+  "Debt Service":       "#B91C1C",
+  "Human Services":     "#9A3412",
+  "General Government": "#C2410C",
+  "Public Safety":      "#D97706",
+  "Other":              "#A8A29E",
 };
 
 // ─── Internal tooltip components ──────────────────────────────────────────────
@@ -37,9 +37,9 @@ const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0];
   return (
-    <div style={{ background: "#0a1628", border: "1px solid #1e3a5f", borderRadius: 8, padding: "10px 14px", color: "#e0e8f0", fontSize: 13 }}>
+    <div style={{ background: "#FFFFFF", border: "1px solid #E8E7E4", borderRadius: 8, padding: "10px 14px", color: "#111827", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{d.name || d.payload?.name}</div>
-      <div>{fmt(d.value)}</div>
+      <div style={{ color: "#6B7280" }}>{fmt(d.value)}</div>
     </div>
   );
 };
@@ -47,10 +47,10 @@ const CustomTooltip = ({ active, payload }) => {
 const PCTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: "#0a1628", border: "1px solid #1e3a5f", borderRadius: 8, padding: "10px 14px", color: "#e0e8f0", fontSize: 13 }}>
+    <div style={{ background: "#FFFFFF", border: "1px solid #E8E7E4", borderRadius: 8, padding: "10px 14px", color: "#111827", fontSize: 13, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{label}</div>
       {payload.map((p, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
+        <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, color: "#6B7280" }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.color, display: "inline-block" }} />
           <span>{p.dataKey}: {fmtPC(p.value)}</span>
         </div>
@@ -80,24 +80,29 @@ export default function ChartPanel({
 }) {
   return (
     <div style={{ marginBottom: 32 }}>
-      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 18 : 22, color: "#e8f1f8", marginBottom: 16, fontWeight: 700 }}>
+      <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 15 : 17, color: "#111827", marginBottom: 16, fontWeight: 700, letterSpacing: "-0.2px" }}>
         {title}
       </h3>
-      <div style={{ display: "flex", gap: 16, flexDirection: isMobile ? "column" : "row" }}>
+      <div style={{ display: "flex", gap: 14, flexDirection: isMobile ? "column" : "row" }}>
 
         {/* Donut */}
-        <div style={{
-          flex: isMobile ? "1 1 auto" : "0 0 300px",
-          background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-          borderRadius: 12, padding: isMobile ? 14 : 20, border: "1px solid #1a3456",
-        }}>
-          <ResponsiveContainer width="100%" height={isMobile ? 200 : 280}>
+        <div
+          className="card-hover"
+          style={{
+            flex: isMobile ? "1 1 auto" : "0 0 300px",
+            background: "#FFFFFF",
+            borderRadius: 12, padding: isMobile ? 14 : 20,
+            border: "1px solid #E8E7E4",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.07)",
+          }}
+        >
+          <ResponsiveContainer width="100%" height={isMobile ? 200 : 260}>
             <PieChart>
               <Pie
                 data={pieData} cx="50%" cy="50%"
-                innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 80 : 110}
+                innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 80 : 105}
                 dataKey="value" labelLine={false} label={PieLabel}
-                strokeWidth={2} stroke="#060e1a"
+                strokeWidth={2} stroke="#FFFFFF"
               >
                 {pieData.map((d, i) => <Cell key={i} fill={PALETTE[d.name]} />)}
               </Pie>
@@ -106,7 +111,7 @@ export default function ChartPanel({
           </ResponsiveContainer>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 12px", marginTop: 8 }}>
             {cats.map(c => (
-              <div key={c} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#8aa4bc" }}>
+              <div key={c} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#9CA3AF" }}>
                 <span style={{ width: 8, height: 8, borderRadius: 2, background: PALETTE[c], display: "inline-block", flexShrink: 0 }} />
                 {c}
               </div>
@@ -115,36 +120,41 @@ export default function ChartPanel({
         </div>
 
         {/* Bar chart */}
-        <div style={{
-          flex: 1, minWidth: 0,
-          background: "linear-gradient(135deg, #0d1f3c 0%, #132744 100%)",
-          borderRadius: 12, padding: isMobile ? 14 : 20, border: "1px solid #1a3456",
-        }}>
-          <div style={{ fontSize: 12, color: "#6b8aad", marginBottom: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>
+        <div
+          className="card-hover"
+          style={{
+            flex: 1, minWidth: 0,
+            background: "#FFFFFF",
+            borderRadius: 12, padding: isMobile ? 14 : 20,
+            border: "1px solid #E8E7E4",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.07)",
+          }}
+        >
+          <div style={{ fontSize: 10, color: "#9CA3AF", marginBottom: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1.2 }}>
             Per Capita vs Group Average
           </div>
-          <ResponsiveContainer width="100%" height={isMobile ? 200 : 280}>
+          <ResponsiveContainer width="100%" height={isMobile ? 200 : 260}>
             <BarChart data={barData} barGap={2}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#152840" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "#6b8aad", fontSize: isMobile ? 9 : 10 }}
-                axisLine={{ stroke: "#1a3456" }} tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: isMobile ? 9 : 10 }}
+                axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
                 angle={-30} textAnchor="end" height={isMobile ? 48 : 60}
               />
               <YAxis
-                tick={{ fill: "#6b8aad", fontSize: isMobile ? 9 : 10 }}
-                axisLine={{ stroke: "#1a3456" }} tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: isMobile ? 9 : 10 }}
+                axisLine={{ stroke: "#E8E7E4" }} tickLine={false}
                 tickFormatter={v => `$${v}`}
                 width={isMobile ? 42 : 60}
               />
               <Tooltip content={<PCTooltip />} />
               <Bar dataKey="County" fill={barColor} radius={[3, 3, 0, 0]} name={countyName} />
-              <Bar dataKey="Group Avg" fill="#2a4a6b" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="Group Avg" fill="#D1D5DB" radius={[3, 3, 0, 0]} />
               {compareCounty && (
                 <Bar dataKey={compareCounty.name} fill={compareColor} radius={[3, 3, 0, 0]} />
               )}
-              <Legend wrapperStyle={{ fontSize: 11, color: "#6b8aad" }} />
+              <Legend wrapperStyle={{ fontSize: 11, color: "#9CA3AF" }} />
             </BarChart>
           </ResponsiveContainer>
         </div>
