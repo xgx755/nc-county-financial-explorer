@@ -742,9 +742,9 @@ export default function NCCountyFinancials() {
           <>
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
-                <h2 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? 30 : 52, fontWeight: 700, color: "#FFFFFF", margin: 0, letterSpacing: "-1px", lineHeight: 1 }}>
+                <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: isMobile ? 30 : 52, fontWeight: 400, color: "#FFFFFF", margin: 0, letterSpacing: "-0.5px", lineHeight: 1 }}>
                   {county.name}
-                  <span style={{ fontSize: isMobile ? 14 : 20, fontWeight: 400, color: "rgba(255,255,255,0.3)", marginLeft: 10 }}>County</span>
+                  <span style={{ fontSize: isMobile ? 14 : 20, fontWeight: 400, fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.4)", marginLeft: 10 }}>County</span>
                 </h2>
                 {compare && <span style={{ fontSize: 16, color: "#FB923C", fontWeight: 600 }}>vs {compare.name}</span>}
                 <SourceBadge county={county} />
