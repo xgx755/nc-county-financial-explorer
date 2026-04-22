@@ -102,12 +102,13 @@ function animateViewBox(svg, targetVBStr, duration = 300) {
   requestAnimationFrame(tick);
 }
 
-export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
+export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jumpToCounty }) {
   const [svgVersion,   setSvgVersion]   = useState(0);
   const [mapMetric,    setMapMetric]    = useState("tax.effective_rate");
   const [compareGroup, setCompareGroup] = useState("all");
   const [panelCounty,  setPanelCounty]  = useState(null);
   const [panelSide,    setPanelSide]    = useState("right");
+  const [panelVisible, setPanelVisible] = useState(false);
 
   const containerRef   = useRef(null);
   const outerRef       = useRef(null);
@@ -188,8 +189,8 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
       path.style.fill        = mapMetric === "fb.pct" && county.fb?.pct == null
         ? COLOR_MISSING
         : (nameToColor[countyName] || COLOR_MISSING);
-      path.style.stroke      = isPanel ? "#60A5FA" : isSelected ? "#60A5FA" : "rgba(255,255,255,0.15)";
-      path.style.strokeWidth = isPanel ? "2.5"     : isSelected ? "1.5"     : "0.8";
+      path.style.stroke      = isPanel ? "#FFFFFF" : isSelected ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.15)";
+      path.style.strokeWidth = isPanel ? "3"      : isSelected ? "2"                       : "0.8";
       path.style.cursor      = "pointer";
     });
 
@@ -302,6 +303,32 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
     return () => ac.abort();
   }, [svgVersion, nameToColor, panelCounty, selectedCounty, mapMetric, compareGroup, dataByName]);
 
+  // ── Effect 3: Jump to county from external search ────────────────────────
+  useEffect(() => {
+    if (!jumpToCounty?.name || svgVersion === 0 || !svgRef.current || !origViewBoxRef.current) return;
+    const county = dataByName[jumpToCounty.name];
+    if (!county) return;
+    const svg = svgRef.current;
+    const path = svg.querySelector(`path[id="${jumpToCounty.name.replace(/ /g, "_")}"]`);
+    if (!path) return;
+    const [ox, oy, ow, oh] = origViewBoxRef.current.split(" ").map(Number);
+    const bbox = path.getBBox();
+    const cx = bbox.x + bbox.width  / 2;
+    const cy = bbox.y + bbox.height / 2;
+    const zW = ow * 0.75;
+    const zH = oh * 0.75;
+    const isRightCounty = cx > ow / 2;
+    const side = isRightCounty ? "left" : "right";
+    const P_x  = isRightCounty ? 0.62 : 0.38;
+    const rawX = cx - zW * P_x;
+    const rawY = cy - zH * 0.5;
+    const vbX  = Math.max(ox - 40, Math.min(ox + ow - zW + 40, rawX));
+    const vbY  = Math.max(oy - 20, Math.min(oy + oh - zH + 20, rawY));
+    animateViewBox(svg, `${vbX} ${vbY} ${zW} ${zH}`);
+    setPanelCounty(county);
+    setPanelSide(side);
+  }, [jumpToCounty, svgVersion, dataByName]);
+
   // Legend formatter
   const fmtLegend = (v) => {
     if (v == null) return "";
@@ -310,6 +337,14 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
     if (mapMetric === "tax.effective_rate") return "$" + v.toFixed(3);
     return "$" + Math.round(v).toLocaleString();
   };
+
+  // Trigger slide-in one frame after panelCounty is set so the browser paints
+  // the initial off-screen transform before transitioning to translateX(0).
+  useEffect(() => {
+    if (!panelCounty) { setPanelVisible(false); return; }
+    const id = requestAnimationFrame(() => setPanelVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, [panelCounty]);
 
   const closePanel = () => {
     if (svgRef.current && origViewBoxRef.current)
@@ -398,14 +433,14 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
         {panelCounty && (() => {
           const d = dataByName[panelCounty.name];
           if (!d) return null;
-          const fbPct   = d.fb?.pct;
-          const fbColor = fbPct == null ? "#4A6480" : fbPct < 0.08 ? "#F87171" : fbPct <= 0.25 ? "#FBBF24" : "#34D399";
+          const fbPct      = d.fb?.pct;
+          const fbColor    = fbPct == null ? "#A8C4D8" : fbPct < 0.08 ? "#F87171" : fbPct <= 0.25 ? "#FBBF24" : "#34D399";
           const rows = [
-            { label: "Population",   value: fmtPop(d.pop),                                  color: "#E8EFF8" },
-            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",          color: "#E8EFF8" },
-            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",     color: "#E8EFF8" },
+            { label: "Population",   value: fmtPop(d.pop),                                   color: "#E8EFF8" },
+            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",           color: "#E8EFF8" },
+            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",      color: "#E8EFF8" },
             { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#E8EFF8" },
-            { label: "Fund Balance", value: fmtFbPct(fbPct),                                 color: fbColor   },
+            { label: "Fund Balance", value: fmtFbPct(fbPct),                                  color: fbColor   },
           ];
           const isRight = panelSide === "right";
           return (
@@ -417,72 +452,82 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick }) {
                 top: 0,
                 bottom: 0,
                 [panelSide]: 0,
-                width: 230,
+                width: 300,
                 zIndex: 20,
-                background: "#152030",
-                backdropFilter: "blur(8px)",
-                borderLeft:  isRight ? "1px solid rgba(255,255,255,0.1)" : "none",
-                borderRight: isRight ? "none" : "1px solid rgba(255,255,255,0.1)",
+                background: "#1E3A52",
+                backdropFilter: "blur(12px)",
+                borderLeft:  isRight ? "4px solid rgba(255,255,255,0.3)" : "none",
+                borderRight: isRight ? "none" : "4px solid rgba(255,255,255,0.3)",
                 boxShadow: isRight
-                  ? "-4px 0 20px rgba(0,0,0,0.5)"
-                  : "4px 0 20px rgba(0,0,0,0.5)",
+                  ? "-12px 0 48px rgba(0,0,0,0.75)"
+                  : "12px 0 48px rgba(0,0,0,0.75)",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
-                padding: "20px 16px",
+                justifyContent: "flex-start",
+                padding: "24px 20px 20px",
                 boxSizing: "border-box",
+                transform: panelVisible
+                  ? "translateX(0)"
+                  : isRight ? "translateX(100%)" : "translateX(-100%)",
+                transition: "transform 0.3s cubic-bezier(0.16, 1, 0.32, 1)",
               }}
             >
-              {/* Header row */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: "#E8EFF8", fontFamily: "'DM Sans', sans-serif", lineHeight: 1.2 }}>
-                    {d.name}
-                  </div>
-                  <div style={{ fontSize: 10, color: "#4A6480", marginTop: 3 }}>{d.pg ?? "No AFIR snapshot"}</div>
-                </div>
-                <button
-                  onClick={closePanel}
-                  title="Close"
-                  style={{
-                    background: "none", border: "1px solid rgba(255,255,255,0.12)",
-                    borderRadius: 5, color: "#7A9AB8", cursor: "pointer",
-                    padding: "3px 7px", fontSize: 11, lineHeight: 1, flexShrink: 0,
-                    transition: "all 0.15s ease",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#60A5FA"; e.currentTarget.style.color = "#60A5FA"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "#7A9AB8"; }}
-                >
-                  ✕
-                </button>
+              {/* Close button — absolute corner */}
+              <button
+                onClick={closePanel}
+                title="Close"
+                style={{
+                  position: "absolute", top: 12, right: 12,
+                  background: "none", border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: 5, color: "#A8C4D8", cursor: "pointer",
+                  padding: "3px 7px", fontSize: 11, lineHeight: 1,
+                  transition: "all 0.15s ease",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.color = "#E8EFF8"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#A8C4D8"; }}
+              >
+                ✕
+              </button>
+
+              {/* County name headline */}
+              <div style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: 22, fontWeight: 400,
+                color: "#FFFFFF", lineHeight: 1.15,
+                marginBottom: 4, paddingRight: 32,
+              }}>
+                {d.name}
+              </div>
+              <div style={{ fontSize: 11, color: "#A8C4D8", marginBottom: 18, letterSpacing: 0.3 }}>
+                {d.pg ?? "No AFIR snapshot"}
               </div>
 
               {/* Stat rows */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
                 {rows.map(({ label, value, color }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 11, color: "#4A6480" }}>{label}</span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color, textAlign: "right" }}>{value}</span>
+                    <span style={{ fontSize: 11, color: "#A8C4D8" }}>{label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color, textAlign: "right" }}>{value}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Full data button */}
+              {/* Full data button — solid primary */}
               <button
                 onClick={() => {
                   closePanel();
                   setTimeout(() => onCountyClick(d.name), 320);
                 }}
                 style={{
-                  marginTop: 16,
-                  background: "none", border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: 6, color: "#60A5FA", cursor: "pointer",
-                  padding: "7px 10px", fontSize: 11, fontWeight: 600,
+                  marginTop: 20,
+                  background: "#2563EB", border: "none",
+                  borderRadius: 7, color: "#FFFFFF", cursor: "pointer",
+                  padding: "9px 14px", fontSize: 12, fontWeight: 600,
                   whiteSpace: "nowrap", width: "100%",
-                  transition: "all 0.15s ease",
+                  transition: "background 0.15s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#60A5FA"; e.currentTarget.style.background = "rgba(96,165,250,0.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.background = "none"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#1D4ED8"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#2563EB"; }}
               >
                 View full data →
               </button>

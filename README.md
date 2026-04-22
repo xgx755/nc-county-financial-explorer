@@ -2,7 +2,7 @@
 
 An interactive data visualization of North Carolina county finances, built from the **Annual Financial Information Reports (AFIR)** published by the NC Department of State Treasurer.
 
-**Live site:** https://xgx755.github.io/nc-county-financials
+**Live site:** https://xgx755.github.io/nc-county-financial-explorer
 
 ---
 
@@ -16,6 +16,7 @@ An interactive data visualization of North Carolina county finances, built from 
 - **Choropleth map** — geographic view of any financial metric across the state
 - **Trends** — multi-year trajectory for revenue and expenditure categories
 - **Fund balance health** — surplus/deficit gauge with LGC minimum threshold indicator
+- **Print report** — printable single-page summary of a selected county's financial profile
 
 ---
 
@@ -62,7 +63,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173/nc-county-financials/`.
+The app will be available at `http://localhost:5173/nc-county-financial-explorer/`.
 
 ---
 
@@ -102,6 +103,7 @@ This runs `npm run build` and pushes the `dist/` folder to the `gh-pages` branch
 | Build | Vite 8 |
 | Charts | Recharts 3 |
 | Map | Custom SVG choropleth |
+| Print | `react-to-print` |
 | Deploy | GitHub Pages via `gh-pages` |
 
 ---

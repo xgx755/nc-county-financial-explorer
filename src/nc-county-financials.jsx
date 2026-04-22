@@ -269,7 +269,7 @@ function NoDataNotice({ county, compare }) {
 // ─── Tab bar (3 tabs) ─────────────────────────────────────────────────────────
 
 function TabBar({ activeTab, setActiveTab, isMobile, dark }) {
-  const tabs = [["data", "Data View"], ["map", "Map View"], ["list", "List View"], ["trends", "Trends"]];
+  const tabs = [["map", "Map View"], ["data", "Data View"], ["list", "List View"], ["trends", "Trends"]];
   const inactiveColor = dark ? "rgba(255,255,255,0.5)"  : "#6B7280";
   const activeColor   = dark ? "#93C5FD"                : "#1549C9";
   const hoverColor    = dark ? "rgba(255,255,255,0.85)" : "#374151";
@@ -326,17 +326,25 @@ export default function NCCountyFinancials() {
     const n = p.get("compare");
     return n && NAME_TO_IDX[n] != null && n !== county ? NAME_TO_IDX[n] : -1;
   });
-  const [searchTerm,  setSearchTerm]  = useState("");
+  const [searchTerm,   setSearchTerm]   = useState("");
+  const [activeIndex,  setActiveIndex]  = useState(0);
+  const [countyFocused, setCountyFocused] = useState(false);
   const [sortKey,     setSortKey]     = useState("rev_pc");
   const [sortDir,     setSortDir]     = useState("desc");
   const [activeTab,   setActiveTab]   = useState(() => {
     const p = new URLSearchParams(window.location.search);
     const t = p.get("tab");
-    return t && ["data", "map", "list", "trends"].includes(t) ? t : "data";
+    return t && ["data", "map", "list", "trends"].includes(t) ? t : "map";
   });
   const [modalOpen,      setModalOpen]      = useState(false);
   const [shareCopied,    setShareCopied]    = useState(false);
   const [shareDropOpen,  setShareDropOpen]  = useState(false);
+  const [mapJump,         setMapJump]         = useState(null);
+  const [mapSearchText,   setMapSearchText]   = useState("");
+  const [mapSearchOpen,   setMapSearchOpen]   = useState(false);
+  const [mapActiveIndex,  setMapActiveIndex]  = useState(0);
+  const [mapFocused,      setMapFocused]      = useState(false);
+  const [fromMap,         setFromMap]         = useState(false);
 
   const headerRef   = useRef(null);
   const infoRef     = useRef(null);
@@ -403,6 +411,29 @@ export default function NCCountyFinancials() {
     [searchTerm]
   );
 
+  useEffect(() => { setActiveIndex(0); }, [searchTerm]);
+
+  const ghostSuffix = useMemo(() => {
+    if (!searchTerm || !filtered[activeIndex]) return "";
+    const name = filtered[activeIndex].name;
+    return name.toLowerCase().startsWith(searchTerm.toLowerCase()) ? name.slice(searchTerm.length) : "";
+  }, [searchTerm, filtered, activeIndex]);
+
+  const mapMatches = useMemo(() =>
+    DATA.map(d => d.name)
+        .filter(n => n.toLowerCase().includes(mapSearchText.toLowerCase()))
+        .sort(),
+    [mapSearchText]
+  );
+
+  useEffect(() => { setMapActiveIndex(0); }, [mapSearchText]);
+
+  const mapGhostSuffix = useMemo(() => {
+    if (!mapSearchText || !mapMatches[mapActiveIndex]) return "";
+    const name = mapMatches[mapActiveIndex];
+    return name.toLowerCase().startsWith(mapSearchText.toLowerCase()) ? name.slice(mapSearchText.length) : "";
+  }, [mapSearchText, mapMatches, mapActiveIndex]);
+
   const countyHasData = hasFinancialSnapshot(county);
   const compareHasData = compare ? hasFinancialSnapshot(compare) : false;
 
@@ -466,14 +497,58 @@ export default function NCCountyFinancials() {
 
   const selectCounty = (idx) => {
     setSelectedIdx(idx);
+    setFromMap(false);
     setSearchTerm("");
+    setActiveIndex(0);
     setTimeout(() => headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  };
+
+  const handleCountyKeyDown = (e) => {
+    if (!searchTerm || filtered.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex(i => Math.max(i - 1, 0));
+    } else if ((e.key === "Enter" || e.key === "Tab") && filtered[activeIndex]) {
+      e.preventDefault();
+      selectCounty(filtered[activeIndex].idx);
+    } else if (e.key === "Escape") {
+      setSearchTerm("");
+    }
+  };
+
+  const selectMapCounty = (name) => {
+    setMapSearchText("");
+    setMapSearchOpen(false);
+    setMapActiveIndex(0);
+    const idx = NAME_TO_IDX[name];
+    if (idx != null) setSelectedIdx(idx);
+    setMapJump(prev => ({ name, seq: (prev?.seq ?? 0) + 1 }));
+  };
+
+  const handleMapKeyDown = (e) => {
+    if (!mapSearchText || mapMatches.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setMapActiveIndex(i => Math.min(i + 1, mapMatches.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setMapActiveIndex(i => Math.max(i - 1, 0));
+    } else if ((e.key === "Enter" || e.key === "Tab") && mapMatches[mapActiveIndex]) {
+      e.preventDefault();
+      selectMapCounty(mapMatches[mapActiveIndex]);
+    } else if (e.key === "Escape") {
+      setMapSearchText("");
+    }
   };
 
   const handleMapCountyClick = useCallback((name) => {
     const idx = NAME_TO_IDX[name];
     if (idx != null) {
       setSelectedIdx(idx);
+      setFromMap(true);
       setActiveTab("data");
       setTimeout(() => headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
     }
@@ -648,7 +723,7 @@ export default function NCCountyFinancials() {
           </div>
 
           {/* Tab bar — flush with bottom of header */}
-          <TabBar activeTab={activeTab} setActiveTab={setActiveTab} isMobile={isMobile} dark={true} />
+          <TabBar activeTab={activeTab} setActiveTab={(tab) => { setActiveTab(tab); setFromMap(false); }} isMobile={isMobile} dark={true} />
         </div>
       </div>
 
@@ -666,24 +741,41 @@ export default function NCCountyFinancials() {
               <label style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5, color: "#4A6480", display: "block", marginBottom: 6 }}>
                 Select County
               </label>
-              <div style={{ position: "relative" }}>
+              <div style={{
+                position: "relative",
+                background: "#0E1922",
+                border: countyFocused ? "1px solid rgba(96,165,250,0.6)" : "1px solid rgba(255,255,255,0.12)",
+                boxShadow: countyFocused ? "0 0 0 3px rgba(96,165,250,0.12)" : "none",
+                borderRadius: searchTerm && filtered.length > 0 ? "8px 8px 0 0" : 8,
+                transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+              }}>
+                {ghostSuffix && (
+                  <div aria-hidden="true" style={{
+                    position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+                    padding: "10px 14px", fontSize: 14, pointerEvents: "none",
+                    display: "flex", alignItems: "center", overflow: "hidden", whiteSpace: "nowrap",
+                  }}>
+                    <span style={{ color: "transparent" }}>{searchTerm}</span>
+                    <span style={{ color: "#4A6480" }}>{ghostSuffix}</span>
+                  </div>
+                )}
                 <input
                   type="text"
                   placeholder="Search 100 counties…"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  onBlur={() => setTimeout(() => setSearchTerm(""), 150)}
+                  onKeyDown={handleCountyKeyDown}
+                  onFocus={() => setCountyFocused(true)}
+                  onBlur={() => { setCountyFocused(false); setTimeout(() => { setSearchTerm(""); setActiveIndex(0); }, 150); }}
                   aria-label="Search for a county"
                   aria-autocomplete="list"
                   aria-expanded={searchTerm.length > 0 && filtered.length > 0}
                   style={{
                     width: "100%", boxSizing: "border-box", padding: "10px 14px",
-                    background: "#0E1922", border: "1px solid rgba(255,255,255,0.12)",
+                    background: "transparent", border: "none",
                     borderRadius: 8, color: "#E8EFF8", fontSize: 14, outline: "none",
-                    transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+                    position: "relative", zIndex: 1,
                   }}
-                  onFocus={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.6)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(96,165,250,0.12)"; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
                 />
                 {searchTerm && filtered.length > 0 && (
                   <div
@@ -697,15 +789,19 @@ export default function NCCountyFinancials() {
                       boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
                     }}
                   >
-                    {filtered.map(d => (
+                    {filtered.map((d, i) => (
                       <div
                         key={d.idx}
                         role="option"
                         aria-selected={d.idx === selectedIdx}
                         onMouseDown={e => { e.preventDefault(); selectCounty(d.idx); }}
-                        style={{ padding: "9px 14px", cursor: "pointer", fontSize: 13, borderBottom: "1px solid rgba(255,255,255,0.05)", color: d.idx === selectedIdx ? "#60A5FA" : "#E8EFF8" }}
-                        onMouseEnter={e => e.currentTarget.style.background = "#1A2840"}
-                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                        onMouseEnter={() => setActiveIndex(i)}
+                        style={{
+                          padding: "9px 14px", cursor: "pointer", fontSize: 13,
+                          borderBottom: "1px solid rgba(255,255,255,0.05)",
+                          color: d.idx === selectedIdx ? "#60A5FA" : "#E8EFF8",
+                          background: i === activeIndex ? "#1A2840" : "transparent",
+                        }}
                       >
                         {d.name} <span style={{ color: "#9CA3AF", fontSize: 11 }}>({fmtPop(d.pop)})</span>
                       </div>
@@ -748,6 +844,22 @@ export default function NCCountyFinancials() {
         {/* ══ DATA TAB ══════════════════════════════════════════════════════════ */}
         {activeTab === "data" && (
           <>
+            {fromMap && (
+              <button
+                onClick={() => { setFromMap(false); setActiveTab("map"); }}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 5,
+                  background: "none", border: "none", cursor: "pointer",
+                  color: "#4A6480", fontSize: 12, fontWeight: 600,
+                  padding: "0 0 18px", letterSpacing: 0.3,
+                  transition: "color 0.15s ease",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "#7A9AB8"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "#4A6480"; }}
+              >
+                ← Map
+              </button>
+            )}
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
                 <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: isMobile ? 30 : 52, fontWeight: 400, color: "#FFFFFF", margin: 0, letterSpacing: "-0.5px", lineHeight: 1 }}>
@@ -946,13 +1058,97 @@ export default function NCCountyFinancials() {
 
         {/* ══ MAP TAB ═══════════════════════════════════════════════════════════ */}
         {activeTab === "map" && (
-          <Suspense fallback={<ChartSkeleton isMobile={isMobile} />}>
-            <ChoroplethMap
-              data={DATA}
-              selectedCounty={county.name}
-              onCountyClick={handleMapCountyClick}
-            />
-          </Suspense>
+          <>
+            {/* County search bar */}
+            <div style={{
+              position: "relative", marginBottom: 16,
+              background: "#0E1922",
+              border: mapFocused ? "1px solid rgba(96,165,250,0.6)" : "1px solid rgba(255,255,255,0.12)",
+              boxShadow: mapFocused ? "0 0 0 3px rgba(96,165,250,0.12)" : "none",
+              borderRadius: mapSearchOpen && mapSearchText.length > 0 && mapMatches.length > 0 ? "8px 8px 0 0" : 8,
+              transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+            }}>
+              {mapGhostSuffix && (
+                <div aria-hidden="true" style={{
+                  position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+                  padding: "10px 14px", fontSize: 14, pointerEvents: "none",
+                  display: "flex", alignItems: "center", overflow: "hidden", whiteSpace: "nowrap",
+                  fontFamily: "'DM Sans', sans-serif",
+                }}>
+                  <span style={{ color: "transparent" }}>{mapSearchText}</span>
+                  <span style={{ color: "#4A6480" }}>{mapGhostSuffix}</span>
+                </div>
+              )}
+              <input
+                type="text"
+                placeholder="Search county…"
+                value={mapSearchText}
+                onChange={e => { setMapSearchText(e.target.value); setMapSearchOpen(true); }}
+                onKeyDown={handleMapKeyDown}
+                onFocus={() => { setMapFocused(true); setMapSearchOpen(true); }}
+                onBlur={() => { setMapFocused(false); setTimeout(() => { setMapSearchText(""); setMapSearchOpen(false); setMapActiveIndex(0); }, 150); }}
+                aria-label="Search for a county on the map"
+                aria-autocomplete="list"
+                aria-expanded={mapSearchOpen && mapSearchText.length > 0 && mapMatches.length > 0}
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  border: "none",
+                  borderRadius: 8,
+                  color: "#E8EFF8",
+                  fontSize: 14,
+                  padding: "10px 14px",
+                  outline: "none",
+                  boxSizing: "border-box",
+                  fontFamily: "'DM Sans', sans-serif",
+                  position: "relative", zIndex: 1,
+                }}
+              />
+              {mapSearchOpen && mapSearchText.length > 0 && mapMatches.length > 0 && (
+                <div style={{
+                  position: "absolute", top: "100%", left: 0, right: 0,
+                  background: "#1A2840",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderTop: "none", borderRadius: "0 0 8px 8px",
+                  maxHeight: 220, overflowY: "auto", zIndex: 100,
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                }}>
+                  {mapMatches.map((name, i) => (
+                    <button
+                      key={name}
+                      onMouseDown={() => selectMapCounty(name)}
+                      onMouseEnter={() => setMapActiveIndex(i)}
+                      style={{
+                        display: "block", width: "100%", textAlign: "left",
+                        border: "none", color: "#E8EFF8",
+                        padding: "8px 12px", fontSize: 13, cursor: "pointer",
+                        fontFamily: "'DM Sans', sans-serif",
+                        background: i === mapActiveIndex ? "rgba(255,255,255,0.08)" : "none",
+                      }}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {mapSearchOpen && mapSearchText.length > 0 && mapMatches.length === 0 && (
+                <div style={{
+                  position: "absolute", top: "100%", left: 0, right: 0,
+                  background: "#1A2840", border: "1px solid rgba(255,255,255,0.12)",
+                  borderTop: "none", borderRadius: "0 0 8px 8px", zIndex: 100,
+                  padding: "8px 12px", color: "#4A6480", fontSize: 13,
+                }}>No results</div>
+              )}
+            </div>
+            <Suspense fallback={<ChartSkeleton isMobile={isMobile} />}>
+              <ChoroplethMap
+                data={DATA}
+                selectedCounty={county.name}
+                onCountyClick={handleMapCountyClick}
+                jumpToCounty={mapJump}
+              />
+            </Suspense>
+          </>
         )}
 
         {/* ══ LIST TAB ══════════════════════════════════════════════════════════ */}
