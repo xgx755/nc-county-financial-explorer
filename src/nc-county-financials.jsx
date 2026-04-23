@@ -607,6 +607,8 @@ export default function NCCountyFinancials() {
   return (
     <div style={{ minHeight: "100vh", background: "#0E1922", color: "#E8EFF8", fontFamily: "'DM Sans', sans-serif" }}>
 
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+
       {/* ── Header (contains title, tabs, actions) ── */}
       <div
         ref={headerRef}
@@ -727,7 +729,7 @@ export default function NCCountyFinancials() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: `20px ${px}` }}>
+      <div id="main-content" role="main" style={{ maxWidth: 1200, margin: "0 auto", padding: `20px ${px}` }}>
 
         {/* ── Selector row — hidden in map view ── */}
         {!isMapView && (
@@ -1146,6 +1148,7 @@ export default function NCCountyFinancials() {
                 selectedCounty={county.name}
                 onCountyClick={handleMapCountyClick}
                 jumpToCounty={mapJump}
+                isMobile={isMobile}
               />
             </Suspense>
           </>
@@ -1182,7 +1185,10 @@ export default function NCCountyFinancials() {
                         <th
                           key={col.key}
                           scope="col"
+                          tabIndex={0}
                           onClick={() => handleSort(col.key)}
+                          onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSort(col.key); } }}
+                          aria-sort={sortKey === col.key ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                           style={{
                             padding: isMobile ? "10px 10px" : "12px 16px",
                             textAlign: "left", fontSize: 10,

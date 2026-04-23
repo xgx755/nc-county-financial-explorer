@@ -83,7 +83,15 @@ const selectStyle = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234A6480'/%3E%3C/svg%3E")`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "right 10px center",
-  minWidth: 160,
+  minWidth: 140,
+};
+
+const mobileSelectStyle = {
+  ...selectStyle,
+  minWidth: 120,
+  minHeight: 44,
+  padding: "10px 28px 10px 12px",
+  fontSize: 14,
 };
 
 // Smooth eased viewBox animation — interpolates from current viewBox to target.
@@ -102,7 +110,61 @@ function animateViewBox(svg, targetVBStr, duration = 300) {
   requestAnimationFrame(tick);
 }
 
-export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jumpToCounty }) {
+function PanelContent({ d, rows, onClose, onViewFull }) {
+  return (
+    <>
+      <button
+        onClick={onClose}
+        aria-label="Close county details"
+        style={{
+          position: "absolute", top: 12, right: 12,
+          background: "none", border: "1px solid rgba(255,255,255,0.15)",
+          borderRadius: 5, color: "#A8C4D8", cursor: "pointer",
+          padding: "3px 7px", fontSize: 11, lineHeight: 1,
+          transition: "all 0.15s ease",
+        }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.color = "#E8EFF8"; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#A8C4D8"; }}
+      >
+        ✕
+      </button>
+      <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, fontWeight: 400, color: "#FFFFFF", lineHeight: 1.15, marginBottom: 4, paddingRight: 32 }}>
+        {d.name}
+      </div>
+      <div style={{ fontSize: 11, color: "#A8C4D8", marginBottom: 18, letterSpacing: 0.3 }}>
+        {d.pg ?? "No AFIR snapshot"}
+      </div>
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+        {rows.map(({ label, value, color, note }) => (
+          <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+            <span style={{ fontSize: 11, color: "#A8C4D8" }}>{label}</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color, textAlign: "right" }}>
+              {value}
+              {note && <span style={{ fontSize: 10, fontWeight: 400, color: "#A8C4D8", marginLeft: 5 }}>({note})</span>}
+            </span>
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={onViewFull}
+        style={{
+          marginTop: 20,
+          background: "#2563EB", border: "none",
+          borderRadius: 7, color: "#FFFFFF", cursor: "pointer",
+          padding: "11px 14px", fontSize: 12, fontWeight: 600,
+          whiteSpace: "nowrap", width: "100%",
+          transition: "background 0.15s ease",
+        }}
+        onMouseEnter={e => { e.currentTarget.style.background = "#1D4ED8"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = "#2563EB"; }}
+      >
+        View full data →
+      </button>
+    </>
+  );
+}
+
+export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jumpToCounty, isMobile = false }) {
   const [svgVersion,   setSvgVersion]   = useState(0);
   const [mapMetric,    setMapMetric]    = useState("tax.effective_rate");
   const [compareGroup, setCompareGroup] = useState("all");
@@ -352,54 +414,78 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jum
     setPanelCounty(null);
   };
 
+  // Build panel rows — shared between desktop overlay and mobile card
+  const panelData = panelCounty ? dataByName[panelCounty.name] : null;
+  const panelRows = panelData ? (() => {
+    const fbPct  = panelData.fb?.pct;
+    const fbColor = fbPct == null ? "#A8C4D8" : fbPct < 0.08 ? "#F87171" : fbPct <= 0.25 ? "#FBBF24" : "#34D399";
+    const fbLabel = fbPct == null ? "N/A" : fbPct < 0.08 ? "Below minimum" : fbPct <= 0.25 ? "Moderate" : "Healthy";
+    return {
+      fbColor,
+      rows: [
+        { label: "Population",   value: fmtPop(panelData.pop),                                          color: "#E8EFF8", note: null },
+        { label: "Revenue",      value: fmtPC(panelData.pr["Total Revenue"]) + " / pp",                 color: "#E8EFF8", note: null },
+        { label: "Expenditures", value: fmtPC(panelData.pe["Total Expenditures"]) + " / pp",            color: "#E8EFF8", note: null },
+        { label: "Tax Rate",     value: panelData.tax ? `$${panelData.tax.county_rate.toFixed(3)}` : "—", color: "#E8EFF8", note: null },
+        { label: "Fund Balance", value: fmtFbPct(fbPct),                                                color: fbColor,   note: fbLabel },
+      ],
+    };
+  })() : null;
+
   return (
     <div>
       {/* ── Controls row ── */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <label htmlFor="map-metric" style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Color by
-          </span>
-          <div style={{ position: "relative" }}>
-            <select value={mapMetric} onChange={e => setMapMetric(e.target.value)} style={selectStyle}>
-              {METRIC_OPTIONS.map(m => <option key={m.key} value={m.key}>{m.label}</option>)}
-            </select>
-          </div>
+          </label>
+          <select
+            id="map-metric"
+            value={mapMetric}
+            onChange={e => setMapMetric(e.target.value)}
+            aria-label="Color map by metric"
+            style={isMobile ? mobileSelectStyle : selectStyle}
+          >
+            {METRIC_OPTIONS.map(m => <option key={m.key} value={m.key}>{m.label}</option>)}
+          </select>
         </div>
 
-        <div style={{ width: 1, height: 24, background: "rgba(255,255,255,0.1)" }} />
+        <div style={{ width: 1, height: 24, background: "rgba(255,255,255,0.1)" }} aria-hidden="true" />
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
+          <label htmlFor="map-group" style={{ fontSize: 11, color: "#4A6480", textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 600, whiteSpace: "nowrap" }}>
             Compare group
-          </span>
-          <div style={{ position: "relative" }}>
-            <select
-              value={compareGroup}
-              onChange={e => {
-                if (svgRef.current && origViewBoxRef.current)
-                  animateViewBox(svgRef.current, origViewBoxRef.current, 250);
-                setCompareGroup(e.target.value);
-                setPanelCounty(null);
-              }}
-              style={selectStyle}
-            >
-              {POP_GROUPS.map(g => <option key={g.key} value={g.key}>{g.label}</option>)}
-            </select>
-          </div>
+          </label>
+          <select
+            id="map-group"
+            value={compareGroup}
+            onChange={e => {
+              if (svgRef.current && origViewBoxRef.current)
+                animateViewBox(svgRef.current, origViewBoxRef.current, 250);
+              setCompareGroup(e.target.value);
+              setPanelCounty(null);
+            }}
+            aria-label="Filter map by population group"
+            style={isMobile ? mobileSelectStyle : selectStyle}
+          >
+            {POP_GROUPS.map(g => <option key={g.key} value={g.key}>{g.label}</option>)}
+          </select>
         </div>
       </div>
 
       {/* ── Map container ── */}
       <div
         ref={outerRef}
+        role="img"
+        aria-label={`Choropleth map of NC counties colored by ${METRIC_OPTIONS.find(m => m.key === mapMetric)?.label ?? "metric"}. Use the search field above to select a county by keyboard.`}
         style={{
           position: "relative",
           background: "#0A1520",
           borderRadius: 12,
           border: "1px solid rgba(255,255,255,0.08)",
           overflow: "hidden",
-          aspectRatio: "2 / 1",
+          aspectRatio: isMobile ? "4 / 3" : "2 / 1",
           boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.25)",
         }}
       >
@@ -419,6 +505,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jum
         {/* Tooltip */}
         <div
           ref={tooltipRef}
+          role="tooltip"
           style={{
             display: "none", position: "absolute",
             background: "#1A2840", border: "1px solid rgba(255,255,255,0.1)",
@@ -429,123 +516,88 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jum
           }}
         />
 
-        {/* ── Sidebar panel ── */}
-        {panelCounty && (() => {
-          const d = dataByName[panelCounty.name];
-          if (!d) return null;
-          const fbPct      = d.fb?.pct;
-          const fbColor    = fbPct == null ? "#A8C4D8" : fbPct < 0.08 ? "#F87171" : fbPct <= 0.25 ? "#FBBF24" : "#34D399";
-          const rows = [
-            { label: "Population",   value: fmtPop(d.pop),                                   color: "#E8EFF8" },
-            { label: "Revenue",      value: fmtPC(d.pr["Total Revenue"]) + " / pp",           color: "#E8EFF8" },
-            { label: "Expenditures", value: fmtPC(d.pe["Total Expenditures"]) + " / pp",      color: "#E8EFF8" },
-            { label: "Tax Rate",     value: d.tax ? `$${d.tax.county_rate.toFixed(3)}` : "—", color: "#E8EFF8" },
-            { label: "Fund Balance", value: fmtFbPct(fbPct),                                  color: fbColor   },
-          ];
-          const isRight = panelSide === "right";
-          return (
-            <div
-              className={`map-sidebar-${panelSide}`}
-              onClick={e => e.stopPropagation()}
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                [panelSide]: 0,
-                width: 300,
-                zIndex: 20,
-                background: "#1E3A52",
-                backdropFilter: "blur(12px)",
-                borderLeft:  isRight ? "4px solid rgba(255,255,255,0.3)" : "none",
-                borderRight: isRight ? "none" : "4px solid rgba(255,255,255,0.3)",
-                boxShadow: isRight
-                  ? "-12px 0 48px rgba(0,0,0,0.75)"
-                  : "12px 0 48px rgba(0,0,0,0.75)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                padding: "24px 20px 20px",
-                boxSizing: "border-box",
-                transform: panelVisible
-                  ? "translateX(0)"
-                  : isRight ? "translateX(100%)" : "translateX(-100%)",
-                transition: "transform 0.3s cubic-bezier(0.16, 1, 0.32, 1)",
-              }}
-            >
-              {/* Close button — absolute corner */}
-              <button
-                onClick={closePanel}
-                title="Close"
-                style={{
-                  position: "absolute", top: 12, right: 12,
-                  background: "none", border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: 5, color: "#A8C4D8", cursor: "pointer",
-                  padding: "3px 7px", fontSize: 11, lineHeight: 1,
-                  transition: "all 0.15s ease",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.color = "#E8EFF8"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#A8C4D8"; }}
-              >
-                ✕
-              </button>
+        {/* Desktop sidebar — absolute overlay, hidden on mobile */}
+        {!isMobile && panelData && panelRows && (
+          <div
+            className={`map-sidebar-${panelSide}`}
+            onClick={e => e.stopPropagation()}
+            aria-label={`${panelData.name} County details`}
+            style={{
+              position: "absolute",
+              top: 0, bottom: 0,
+              [panelSide]: 0,
+              width: 300,
+              zIndex: 20,
+              background: "#1E3A52",
+              backdropFilter: "blur(12px)",
+              borderLeft:  panelSide === "right" ? "4px solid rgba(255,255,255,0.3)" : "none",
+              borderRight: panelSide === "right" ? "none" : "4px solid rgba(255,255,255,0.3)",
+              boxShadow: panelSide === "right"
+                ? "-12px 0 48px rgba(0,0,0,0.75)"
+                : "12px 0 48px rgba(0,0,0,0.75)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              padding: "24px 20px 20px",
+              boxSizing: "border-box",
+              transform: panelVisible
+                ? "translateX(0)"
+                : panelSide === "right" ? "translateX(100%)" : "translateX(-100%)",
+              transition: "transform 0.3s cubic-bezier(0.16, 1, 0.32, 1)",
+            }}
+          >
+            <PanelContent
+              d={panelData}
+              rows={panelRows.rows}
+              fbColor={panelRows.fbColor}
+              onClose={closePanel}
+              onViewFull={() => { closePanel(); setTimeout(() => onCountyClick(panelData.name), 320); }}
+            />
+          </div>
+        )}
+      </div>
 
-              {/* County name headline */}
-              <div style={{
-                fontFamily: "'DM Serif Display', serif",
-                fontSize: 22, fontWeight: 400,
-                color: "#FFFFFF", lineHeight: 1.15,
-                marginBottom: 4, paddingRight: 32,
-              }}>
-                {d.name}
-              </div>
-              <div style={{ fontSize: 11, color: "#A8C4D8", marginBottom: 18, letterSpacing: 0.3 }}>
-                {d.pg ?? "No AFIR snapshot"}
-              </div>
+      {/* Mobile county details card — rendered below map, not overlapping */}
+      {isMobile && panelData && panelRows && (
+        <div
+          className="fade-in"
+          aria-label={`${panelData.name} County details`}
+          style={{
+            position: "relative",
+            marginTop: 12,
+            background: "#1E3A52",
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.15)",
+            padding: "20px 16px 16px",
+            boxSizing: "border-box",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
+          }}
+        >
+          <PanelContent
+            d={panelData}
+            rows={panelRows.rows}
+            fbColor={panelRows.fbColor}
+            onClose={closePanel}
+            onViewFull={() => { closePanel(); setTimeout(() => onCountyClick(panelData.name), 320); }}
+          />
+        </div>
+      )}
 
-              {/* Stat rows */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-                {rows.map(({ label, value, color }) => (
-                  <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 11, color: "#A8C4D8" }}>{label}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color, textAlign: "right" }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Full data button — solid primary */}
-              <button
-                onClick={() => {
-                  closePanel();
-                  setTimeout(() => onCountyClick(d.name), 320);
-                }}
-                style={{
-                  marginTop: 20,
-                  background: "#2563EB", border: "none",
-                  borderRadius: 7, color: "#FFFFFF", cursor: "pointer",
-                  padding: "9px 14px", fontSize: 12, fontWeight: 600,
-                  whiteSpace: "nowrap", width: "100%",
-                  transition: "background 0.15s ease",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = "#1D4ED8"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "#2563EB"; }}
-              >
-                View full data →
-              </button>
-            </div>
-          );
-        })()}
+      {/* Screen-reader live region — announces county selection */}
+      <div aria-live="polite" aria-atomic="true" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}>
+        {panelData ? `${panelData.name} County selected. Population: ${fmtPop(panelData.pop)}.` : ""}
       </div>
 
       {/* ── Legend ── */}
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, marginBottom: 8, flexWrap: "wrap" }}>
         {compareGroup !== "all" && (
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid rgba(255,255,255,0.1)" }} />
+            <div aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_DIMMED, border: "1px solid rgba(255,255,255,0.1)" }} />
             <span style={{ fontSize: 10, color: "#4A6480" }}>Outside group</span>
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{
+          <div aria-hidden="true" style={{
             width: 120, height: 12, borderRadius: 4,
             background: `linear-gradient(to right, ${COLOR_STEPS[0]}, ${COLOR_STEPS[COLOR_STEPS.length - 1]})`,
           }} />
@@ -554,7 +606,7 @@ export default function ChoroplethMap({ data, selectedCounty, onCountyClick, jum
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid rgba(255,255,255,0.1)" }} />
+          <div aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 3, background: COLOR_MISSING, border: "1px solid rgba(255,255,255,0.1)" }} />
           <span style={{ fontSize: 10, color: "#4A6480" }}>Not in AFIR dataset</span>
         </div>
         {mapMetric === "fb.pct" && (
